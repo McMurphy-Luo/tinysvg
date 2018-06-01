@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(easy-svg C CXX)
+project(tinysvg C CXX)
 set(CMAKE_CXX_STANDARD 11)
 
 if(${UNIX})
@@ -18,38 +18,46 @@ set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(test_source_dir ${PROJECT_SOURCE_DIR}/test)
 
 include_directories(${source_dir})
+list(APPEND source ${source_dir}/Config.h)
+list(APPEND source ${source_dir}/parser/SVGDocumentParser.cpp
+                   ${source_dir}/parser/SVGDocumentParser.h
+                    )
 list(APPEND source
-        ${source_dir}/common/Global.h
-        ${source_dir}/common/Point.cpp
-        ${source_dir}/common/Point.h
-        ${source_dir}/common/Size.cpp
-        ${source_dir}/common/Size.h
-        ${source_dir}/common/Utf8String.cpp
-        ${source_dir}/common/Utf8String.h
-
-        ${source_dir}/svg/Rectangle.cpp
-        ${source_dir}/svg/Rectangle.h
-        ${source_dir}/svg/Circle.cpp
-        ${source_dir}/svg/Circle.h
-        ${source_dir}/svg/Color.cpp
-        ${source_dir}/svg/Color.h
-        ${source_dir}/svg/Line.cpp
-        ${source_dir}/svg/Line.h
+        ${source_dir}/Config.h
+        ${source_dir}/svg/SVGCircle.cpp
+        ${source_dir}/svg/SVGCircle.h
+        ${source_dir}/svg/SVGColor.cpp
+        ${source_dir}/svg/SVGColor.h
+        ${source_dir}/svg/SVGEllipse.cpp
+        ${source_dir}/svg/SVGEllipse.h
+        ${source_dir}/svg/SVGLength.cpp
+        ${source_dir}/svg/SVGLength.h
+        ${source_dir}/svg/SVGLine.cpp
+        ${source_dir}/svg/SVGLine.h
+        ${source_dir}/svg/SVGPoint.cpp
+        ${source_dir}/svg/SVGPoint.h
+        ${source_dir}/svg/SVGPolygon.cpp
+        ${source_dir}/svg/SVGPolygon.h
+        ${source_dir}/svg/SVGPolyline.cpp
+        ${source_dir}/svg/SVGPolyline.h
+        ${source_dir}/svg/SVGRect.cpp
+        ${source_dir}/svg/SVGRect.h
         )
+list(APPEND source ${source_dir}/tinyxml2/tinyxml2.h ${source_dir}/tinyxml2/tinyxml2.cpp)
 
 list(APPEND test_source
         ${test_source_dir}/main.cpp)
 add_executable(test ${test_source})
-add_library(EasySvg ${source})
+add_library(tinysvg ${source})
 
-target_compile_definitions(EasySvg PUBLIC "MUI")
+target_compile_definitions(tinysvg PUBLIC "TINYSVG")
 
 if(${WIN32})
-    target_compile_definitions(EasySvg PUBLIC "UNICODE" "_UNICODE")
+    target_compile_definitions(tinysvg PUBLIC "UNICODE" "_UNICODE")
     target_compile_definitions(test PUBLIC "UNICODE" "_UNICODE")
-    target_link_libraries(EasySvg d2d1.lib dwrite.lib ComCtl32.lib)
+    target_link_libraries(tinysvg d2d1.lib dwrite.lib ComCtl32.lib)
     set_target_properties(test PROPERTIES WIN32_EXECUTABLE TRUE)
 endif(${WIN32})
 
-set_target_properties(EasySvg PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${output_dir})
+set_target_properties(tinysvg PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${output_dir})
 set_target_properties(test PROPERTIES LINKER_LANGUAGE CXX)

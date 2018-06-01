@@ -1,5 +1,5 @@
-#ifndef EASY_SVG_SVG_RECT_H_
-#define EASY_SVG_SVG_RECT_H_
+#ifndef TINYSVG_SVGRECT_H_
+#define TINYSVG_SVGRECT_H_
 
 #include "../Config.h"
 #include "./SVGLength.h"
@@ -8,39 +8,51 @@ NAMESPACE_BEGIN
 
 class SVGRect {
 public:
-    SVGRect(SVGLength left, SVGLength top, SVGLength right, SVGLength bottom)
-        :left_(left),
-        top_(top),
-        right_(right),
-        bottom_(bottom)
+    SVGRect(SVGLength x, SVGLength y, SVGLength width, SVGLength height, SVGLength rx, SVGLength ry)
+        :x_(x),
+        y_(y),
+        width_(width),
+        height_(height),
+        rx_(rx),
+        ry_(ry)
     {
 
     }
 
-    Left() { return left_; }
+    SVGLength X() const { return x_; }
 
-    void SetLeft(SVGLength value) { left_ = value; }
+    void SetX(SVGLength value) { x_ = value; }
 
-    Top() { return top_; }
+    SVGLength Y() const { return y_; }
 
-    void SetTop(SVGLength value) { top_ = value; }
+    void SetY(SVGLength value) { y_ = value; }
 
-    Right() { return right_; }
+    SVGLength Width() const { return width_; }
 
-    void SetRight(SVGLength value) { right_ = value; }
+    void SetWidth(SVGLength value) { width_ = value; }
 
-    Bottom() { return bottom_; }
+    SVGLength Heigth() const { return height_; }
 
-    void SetBottom(SVGLength value) { bottom_ = value; }
+    void SetHeight(SVGLength value) { height_ = value; }
+
+    SVGLength RX() const { return rx_; }
+
+    void SetRX(SVGLength value) { rx_ = value; }
+
+    SVGLength RY() const { return ry_; }
+
+    void SetRY(SVGLength value) { ry_ = value; }
 
 private:
-    SVGLength left_;
-    SVGLength top_;
-    SVGLength right_;
-    SVGLength bottom_;
+    SVGLength x_;
+    SVGLength y_;
+    SVGLength width_;
+    SVGLength height_;
+    SVGLength rx_;
+    SVGLength ry_;
 };
 
 NAMESPACE_END
 
 
-#endif // EASY_SVG_SVG_RECT_H_
+#endif // TINYSVG_SVGRECT_H_

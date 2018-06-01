@@ -1,47 +1,32 @@
-#ifndef EASY_SVG_COMMON_POINT_H_
-#define EASY_SVG_COMMON_POINT_H_
+#ifndef TINYSVG_SVGPOINT_H_
+#define TINYSVG_SVGPOINT_H_
 
 #include "../Config.h"
-#include "./SVGLength.h"
+#include <cmath>
 
 NAMESPACE_BEGIN
 
 class SVGPoint {
 public:
-    SVGPoint(int x, int y) :
+    SVGPoint(double_t x, double_t y) :
         x_(x),
         y_(y) {
         // do nothing
     }
 
-    int X() const { return x_; }
+    double_t X() const { return x_; }
 
-    int Y() const { return y_; }
+    double_t Y() const { return y_; }
 
-    void SetX(int value) { x_ = value; }
+    void SetX(double_t value) { x_ = value; }
 
-    void SetY(int value) { y_ = value; }
-
-    void Offset(int x, int y) { x_ += x; y_ += y; }
-
-    int Distance(const Point& another) {
-        return static_cast<int>(std::round(
-            std::sqrt(
-                std::pow(another.X() - X(), 2) + std::pow(another.Y() - Y(), 2)
-            )
-        ));
-    }
-
-    Point Middle(const Point& another) {
-        return Point((X() + another.X()) / 2, (Y() + another.Y()) / 2);
-    }
+    void SetY(double_t value) { y_ = value; }
        
 private:
-    int x_;
-    int y_;
+    double_t x_;
+    double_t y_;
 };
-
 
 NAMESPACE_END
 
-#endif // EASY_SVG_COMMON_POINT_H_
+#endif // TINYSVG_SVGPOINT_H_
