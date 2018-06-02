@@ -1,6 +1,5 @@
-#ifndef EASY_SVG_COMMON_LENGTH_H_
-#define EASY_SVG_COMMON_LENGTH_H_
-
+#ifndef TINYSVG_SVGLENGTH_H_
+#define TINYSVG_SVGLENGTH_H_
 
 #include "../Config.h"
 #include <cmath>
@@ -20,4 +19,4 @@ struct SVGLength {
 NAMESPACE_END
 
 
-#endif //
+#endif // TINYSVG_SVGLENGTH_H_

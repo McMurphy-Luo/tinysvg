@@ -42,6 +42,8 @@ list(APPEND source
         ${source_dir}/svg/SVGPolyline.h
         ${source_dir}/svg/SVGRect.cpp
         ${source_dir}/svg/SVGRect.h
+        ${source_dir}/svg/SVGSVG.cpp
+        ${source_dir}/svg/SVGSVG.h
         )
 list(APPEND source ${source_dir}/tinyxml2/tinyxml2.h ${source_dir}/tinyxml2/tinyxml2.cpp)
 
