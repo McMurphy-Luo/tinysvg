@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVGSVG_H_
-#define TINYSVG_SVGSVG_H_
+#ifndef TINYSVG_SVG_SVGSVG_H_
+#define TINYSVG_SVG_SVGSVG_H_
 
 #include "../Config.h"
 
@@ -11,4 +11,4 @@ class SVGSVG {
 
 NAMESPACE_END
 
-#endif // TINYSVG_SVGSVG_H_
+#endif // TINYSVG_SVG_SVGSVG_H_

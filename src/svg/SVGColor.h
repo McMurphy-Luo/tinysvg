@@ -1,12 +1,16 @@
-#ifndef MUI_COMMON_COLOR_H_
-#define MUI_COMMON_COLOR_H_
+#ifndef TINYSVG_SVG_SVGCOLOR_H_
+#define TINYSVG_SVG_SVGCOLOR_H_
 
 #include "../Config.h"
 #include <cstdint>
 #include <cmath>
+#include "./DOMString.h"
 
 NAMESPACE_BEGIN
 
+class SVGColor;
+
+bool ParseColorFromString(const DOMString& target, SVGColor& output);
 
 class SVGColor {
 public:
@@ -55,4 +59,4 @@ private:
 
 NAMESPACE_END
 
-#endif // MUI_COMMON_COLOR_H_
+#endif // TINYSVG_SVG_SVGCOLOR_H_

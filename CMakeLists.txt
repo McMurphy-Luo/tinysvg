@@ -17,13 +17,14 @@ SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${output_dir})
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(test_source_dir ${PROJECT_SOURCE_DIR}/test)
 
-include_directories(${source_dir})
 list(APPEND source ${source_dir}/Config.h)
 list(APPEND source ${source_dir}/parser/SVGDocumentParser.cpp
                    ${source_dir}/parser/SVGDocumentParser.h
                     )
 list(APPEND source
         ${source_dir}/Config.h
+        ${source_dir}/svg/DOMString.cpp
+        ${source_dir}/svg/DOMString.h
         ${source_dir}/svg/SVGCircle.cpp
         ${source_dir}/svg/SVGCircle.h
         ${source_dir}/svg/SVGColor.cpp
