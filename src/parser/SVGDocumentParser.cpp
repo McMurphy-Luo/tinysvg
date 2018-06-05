@@ -32,7 +32,6 @@ pair<bool, SVGSVG> SVGDocumentParser::Parse(const char* buffer, size_t buffer_si
     if (root->NoChildren()) {
         return make_pair(true, SVGSVG());
     }
-
 }
 
 NAMESPACE_END
