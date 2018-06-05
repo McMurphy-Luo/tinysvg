@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVGPOINT_H_
-#define TINYSVG_SVGPOINT_H_
+#ifndef TINYSVG_SVG_SVGPOINT_H_
+#define TINYSVG_SVG_SVGPOINT_H_
 
 #include "../Config.h"
 #include <cmath>
@@ -29,4 +29,4 @@ private:
 
 NAMESPACE_END
 
-#endif // TINYSVG_SVGPOINT_H_
+#endif // TINYSVG_SVG_SVGPOINT_H_

@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVGRECT_H_
-#define TINYSVG_SVGRECT_H_
+#ifndef TINYSVG_SVG_SVGRECT_H_
+#define TINYSVG_SVG_SVGRECT_H_
 
 #include "../Config.h"
 #include "./SVGLength.h"
@@ -55,4 +55,4 @@ private:
 NAMESPACE_END
 
 
-#endif // TINYSVG_SVGRECT_H_
+#endif // TINYSVG_SVG_SVGRECT_H_
