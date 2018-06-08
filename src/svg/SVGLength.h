@@ -3,6 +3,7 @@
 
 #include "../Config.h"
 #include <cmath>
+#include <better-enums/enum.h>
 
 NAMESPACE_BEGIN
 
@@ -12,6 +13,9 @@ enum class SVGUnit {
 };
 
 struct SVGLength {
+    SVGLength(double_t value, SVGUnit) {
+
+    }
     double_t value;
     SVGUnit unit;
 };

@@ -25,6 +25,8 @@ list(APPEND source
         ${source_dir}/Config.h
         ${source_dir}/svg/DOMString.cpp
         ${source_dir}/svg/DOMString.h
+        ${source_dir}/svg/SVGBase.cpp
+        ${source_dir}/svg/SVGBase.h
         ${source_dir}/svg/SVGCircle.cpp
         ${source_dir}/svg/SVGCircle.h
         ${source_dir}/svg/SVGColor.cpp
@@ -47,6 +49,8 @@ list(APPEND source
         ${source_dir}/svg/SVGSVG.h
         )
 list(APPEND source ${source_dir}/tinyxml2/tinyxml2.h ${source_dir}/tinyxml2/tinyxml2.cpp)
+
+include
 
 list(APPEND test_source
         ${test_source_dir}/main.cpp)

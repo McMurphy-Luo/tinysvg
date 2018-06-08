@@ -2,29 +2,34 @@
 #define TINYSVG_SVG_SVGPOINT_H_
 
 #include "../Config.h"
+#include "./SVGLength.h"
 #include <cmath>
 
 NAMESPACE_BEGIN
 
 class SVGPoint {
 public:
-    SVGPoint(double_t x, double_t y) :
+    SVGPoint(SVGLength x, SVGLength y) :
         x_(x),
         y_(y) {
         // do nothing
     }
 
-    double_t X() const { return x_; }
+    SVGPoint(): SVGPoint(SVGLength()) {
 
-    double_t Y() const { return y_; }
+    }
 
-    void SetX(double_t value) { x_ = value; }
+    SVGLength X() const { return x_; }
 
-    void SetY(double_t value) { y_ = value; }
+    SVGLength Y() const { return y_; }
+
+    void SetX(SVGLength value) { x_ = value; }
+
+    void SetY(SVGLength value) { y_ = value; }
        
 private:
-    double_t x_;
-    double_t y_;
+    SVGLength x_;
+    SVGLength y_;
 };
 
 NAMESPACE_END

@@ -24,19 +24,35 @@ public:
 
     }
 
-    DOMString(const std::string& data) {
-        data_ = data;
+    DOMString(const std::string& data): data_(data) {
+        // do nothing
     }
 
-    DOMString(const char* data) {
-        data_ = data;
+    DOMString(const char* data): data_(data) {
+        // do nothing
     }
-    
+
     DOMString(const char* data, std::size_t buf_size) : data_(data, buf_size) {
         // do nothing
     }
 
+    DOMString(const std::wstring& data) : DOMString(data.c_str()) {
+        // do nothing
+    }
+
+    DOMString(const wchar_t* data);
+    
+    DOMString(const wchar_t* data, std::size_t buf_size);
+
     bool operator==(const DOMString& another);
+
+    bool operator>(const DOMString& another);
+
+    bool operator>=(const DOMString& another);
+
+    bool operator<(const DOMString& another);
+
+    bool operator<=(const DOMString& another);
 
     std::size_t ChararcterCount() const;
 

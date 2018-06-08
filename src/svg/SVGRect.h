@@ -3,13 +3,15 @@
 
 #include "../Config.h"
 #include "./SVGLength.h"
+#include "./SVGBase.h"
 
 NAMESPACE_BEGIN
 
-class SVGRect {
+class SVGRect: public SVGBase {
 public:
     SVGRect(SVGLength x, SVGLength y, SVGLength width, SVGLength height, SVGLength rx, SVGLength ry)
-        :x_(x),
+        :SVGBase(SVGType::SVGRectangle),
+        x_(x),
         y_(y),
         width_(width),
         height_(height),
