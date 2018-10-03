@@ -1,0 +1,6 @@
+[submodule "third_party/better-enum"]
+	path = third_party/better-enum
+	url = https://github.com/aantron/better-enums.git
+[submodule "third_party/tinyxml2"]
+	path = third_party/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
