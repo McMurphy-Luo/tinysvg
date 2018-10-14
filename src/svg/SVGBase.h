@@ -5,26 +5,29 @@
 
 NAMESPACE_BEGIN
 
-enum class SVGType {
-    SVGSVG,
-    SVGRectangle,
-    SVGLine,
-    SVGEllipse,
-    SVGPolygon,
-    SVGPath,
-    SVGCircle,
-    SVGPolyline
+
+typedef double_t SvgLength;
+
+enum class SvgType {
+  SvgSvg,
+  SvgRectangle,
+  SvgLine,
+  SvgEllipse,
+  SvgPolygon,
+  SvgPath,
+  SvgCircle,
+  SvgPolyline
 };
 
-class SVGBase {
+class SvgBase {
 public:
-    SVGBase(SVGType type) {
+  SvgBase(SvgType type) {
 
-    }
+  }
 
 
 private:
-    SVGType type_;
+  SvgType type_;
 };
 
 NAMESPACE_END
