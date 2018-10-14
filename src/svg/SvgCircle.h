@@ -5,9 +5,9 @@
 
 NAMESPACE_BEGIN
 
-class SVGCircle {
+class SvgCircle {
 public:
-    SVGCircle() {
+    SvgCircle() {
 
     }
 

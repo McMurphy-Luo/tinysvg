@@ -2,9 +2,9 @@
 #define TINYSVG_SVG_SVGBASE_H_
 
 #include "../Config.h"
+#include <cmath>
 
 NAMESPACE_BEGIN
-
 
 typedef double_t SvgLength;
 
@@ -25,6 +25,7 @@ public:
 
   }
 
+  SvgType Type() const { return type_; }
 
 private:
   SvgType type_;

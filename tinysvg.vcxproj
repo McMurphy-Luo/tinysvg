@@ -126,35 +126,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\common\DOMString.h" />
+    <ClInclude Include="src\common\DomString.h" />
     <ClInclude Include="src\Config.h" />
-    <ClInclude Include="src\parser\SVGDocumentParser.h" />
-    <ClInclude Include="src\svg\SVGBase.h" />
-    <ClInclude Include="src\svg\SVGCircle.h" />
-    <ClInclude Include="src\svg\SVGColor.h" />
-    <ClInclude Include="src\svg\SVGEllipse.h" />
-    <ClInclude Include="src\svg\SVGLength.h" />
-    <ClInclude Include="src\svg\SVGLine.h" />
-    <ClInclude Include="src\svg\SVGPoint.h" />
-    <ClInclude Include="src\svg\SVGPolygon.h" />
-    <ClInclude Include="src\svg\SVGPolyline.h" />
-    <ClInclude Include="src\svg\SVGRect.h" />
-    <ClInclude Include="src\svg\SVGSVG.h" />
+    <ClInclude Include="src\parser\SvgDocumentParser.h" />
+    <ClInclude Include="src\svg\SvgBase.h" />
+    <ClInclude Include="src\svg\SvgCircle.h" />
+    <ClInclude Include="src\svg\SvgColor.h" />
+    <ClInclude Include="src\svg\SvgEllipse.h" />
+    <ClInclude Include="src\svg\SvgLine.h" />
+    <ClInclude Include="src\svg\SvgPolygon.h" />
+    <ClInclude Include="src\svg\SvgPolyline.h" />
+    <ClInclude Include="src\svg\SvgRect.h" />
+    <ClInclude Include="src\svg\SvgSvg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\common\DOMString.cpp" />
-    <ClCompile Include="src\parser\SVGDocumentParser.cpp" />
-    <ClCompile Include="src\svg\SVGBase.cpp" />
-    <ClCompile Include="src\svg\SVGCircle.cpp" />
-    <ClCompile Include="src\svg\SVGColor.cpp" />
-    <ClCompile Include="src\svg\SVGEllipse.cpp" />
-    <ClCompile Include="src\svg\SVGLength.cpp" />
-    <ClCompile Include="src\svg\SVGLine.cpp" />
-    <ClCompile Include="src\svg\SVGPoint.cpp" />
-    <ClCompile Include="src\svg\SVGPolygon.cpp" />
-    <ClCompile Include="src\svg\SVGPolyline.cpp" />
-    <ClCompile Include="src\svg\SVGRect.cpp" />
-    <ClCompile Include="src\svg\SVGSVG.cpp" />
+    <ClCompile Include="src\common\DomString.cpp" />
+    <ClCompile Include="src\parser\SvgDocumentParser.cpp" />
+    <ClCompile Include="src\svg\SvgBase.cpp" />
+    <ClCompile Include="src\svg\SvgCircle.cpp" />
+    <ClCompile Include="src\svg\SvgColor.cpp" />
+    <ClCompile Include="src\svg\SvgEllipse.cpp" />
+    <ClCompile Include="src\svg\SvgLine.cpp" />
+    <ClCompile Include="src\svg\SvgPolygon.cpp" />
+    <ClCompile Include="src\svg\SvgPolyline.cpp" />
+    <ClCompile Include="src\svg\SvgRect.cpp" />
+    <ClCompile Include="src\svg\SvgSvg.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

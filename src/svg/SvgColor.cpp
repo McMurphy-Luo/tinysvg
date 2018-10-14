@@ -1,8 +1,8 @@
-#include "./SVGColor.h"
+#include "./SvgColor.h"
 
 NAMESPACE_BEGIN
 
-bool ParseColorFromString(const DOMString& target, SVGColor& output) {
+bool ParseColorFromString(const DomString& target, SVGColor& output) {
     if (target.CharacterCount() != 4 && target.CharacterCount() != 5 && target.CharacterCount() != 7 && target.CharacterCount() != 9) {
         return false;
     }

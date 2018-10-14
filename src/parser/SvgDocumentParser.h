@@ -4,7 +4,7 @@
 #include "../Config.h"
 #include <cstddef>
 #include <utility>
-#include "../svg/SVGSVG.h"
+#include "../svg/SvgSvg.h"
 
 NAMESPACE_BEGIN
 
@@ -14,7 +14,7 @@ public:
 
     }
 
-    std::pair<bool, SVGSVG> Parse(const char* buffer, std::size_t buffer_size);
+    std::pair<bool, SvgSvg> Parse(const char* buffer, std::size_t buffer_size);
 };
 
 NAMESPACE_END

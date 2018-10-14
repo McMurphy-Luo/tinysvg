@@ -4,7 +4,7 @@
 #include "../Config.h"
 #include <cstdint>
 #include <cmath>
-#include "./DOMString.h"
+#include "../common/DomString.h"
 
 NAMESPACE_BEGIN
 

@@ -1,4 +1,5 @@
-#include "./DOMString.h"
+#include "./DomString.h"
+#include <algorithm>
 
 #ifdef TINYSVG_WIN32
 #include <Windows.h>
@@ -8,58 +9,68 @@ using std::size_t;
 
 NAMESPACE_BEGIN
 
-DOMString::DOMString(const wchar_t* data) {
+DomString::DomString(const wchar_t* data) {
     
 }
 
-DOMString::DOMString(const wchar_t* data, std::size_t buf_size) {
+DomString::DomString(const wchar_t* data, std::size_t buf_size) {
 
 }
 
-bool DOMString::operator==(const DOMString& another) {
+bool DomString::operator==(const DomString& another) {
     return data_ == another.data_;
 }
 
-bool DOMString::operator>(const DOMString& another) {
-
+bool DomString::operator>(const DomString& another) {
+  return true;
 }
 
-bool DOMString::operator>=(const DOMString& another) {
-
+bool DomString::operator>=(const DomString& another) {
+  return true;
 }
 
-bool DOMString::operator<(const DOMString& another) {
+bool DomString::operator<(const DomString& another) {
     return data_ < another.data_;
 }
 
-bool DOMString::operator<=(const DOMString& another) {
+bool DomString::operator<=(const DomString& another) {
     return data_ <= another.data_;
 }
 
-size_t DOMString::ChararcterCount() const {
-
+size_t DomString::ChararcterCount() const {
+  return 0;
 }
 
-size_t DOMString::ByteCount() const {
+size_t DomString::ByteCount() const {
     return data_.length();
 }
 
-int DOMString::CharAt(size_t index) const {
-
+int DomString::CharAt(size_t index) const {
+  return 0;
 }
 
-char DOMString::ByteAt(size_t index) const {
-    if (index > data_.length())
-        return -1;
-    return data_.at[index];
+char DomString::ByteAt(size_t index) const {
+    return data_.at(index);
 }
 
-DOMString DOMString::ToLower() const {
-
+DomString DomString::Transform(std::function<char(const char&)> unary) const {
+  char* buf = new char[data_.length()];
+  std::transform(data_.cbegin(), data_.cend(), buf, unary);
+  DomString result(buf, data_.length());
+  delete[] buf;
+  return result;
 }
 
-DOMString DOMString::ToUpper() const {
+DomString DomString::ToLower() const {
+  return Transform([](const char& the_char) -> char {
+    return tolower(the_char);
+  });
+}
 
+DomString DomString::ToUpper() const {
+  return Transform([](const char& the_char) -> char {
+    return toupper(the_char);
+  });
 }
 
 NAMESPACE_END

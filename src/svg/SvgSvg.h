@@ -2,26 +2,26 @@
 #define TINYSVG_SVG_SVGSVG_H_
 
 #include "../Config.h"
-#include "./SVGBase.h"
+#include "./SvgBase.h"
 #include <vector>
 #include <memory>
 
 NAMESPACE_BEGIN
 
-class SVGSVG: public SVGBase {
+class SvgSvg: public SvgBase {
 public:
-    SVGSVG(): SVGBase(SVGType::SVGSVG), children_() {
+    SvgSvg(): SvgBase(SvgType::SvgSvg), children_() {
 
     }
 
-    void AddChild(const std::shared_ptr<SVGBase>& target);
+    void AddChild(const std::shared_ptr<SvgBase>& target);
 
-    void RemoveChild(const std::shared_ptr<SVGBase>& child);
+    void RemoveChild(const std::shared_ptr<SvgBase>& child);
 
     std::size_t Length() const;
 
 private:
-    std::vector<std::shared_ptr<SVGBase>> children_;
+    std::vector<std::shared_ptr<SvgBase>> children_;
 };
 
 NAMESPACE_END

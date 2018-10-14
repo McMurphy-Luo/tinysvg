@@ -10,10 +10,13 @@
 
 #include "../Config.h"
 #include <string>
+#include <functional>
 
 NAMESPACE_BEGIN
 
-typedef std::string utf8string;
+typedef std::string Utf8String;
+
+Utf8String WideStringToUtf8String();
 
 /*
  * DOMString is not normative. Corresponding to w3c standard, DOMString should be implemented as Sequence<char16_t>
@@ -21,54 +24,60 @@ typedef std::string utf8string;
  * All Unicode function is implemented by operation system provided functions such as MultiByteToWideChar on windows.
  * No Unicode library is required.
  */
-class DOMString {
+class DomString {
 public:
-    DOMString(): data_() {
+  DomString()
+  : data_() {
 
-    }
+  }
 
-    DOMString(const utf8string& another): data_(another) {
-        // do nothing
-    }
+  DomString(const Utf8String& another)
+  : data_(another) {
+    // do nothing
+  }
 
-    DOMString(const char* utf8_string_raw): data_(utf8_string_raw) {
-        // do nothing
-    }
+  DomString(const char* utf8_string_raw) : data_(utf8_string_raw) {
+    // do nothing
+  }
 
-    DOMString(const char* utf8_string_raw, std::size_t buf_size) : data_(utf8_string_raw, buf_size) {
-        // do nothing
-    }
+  DomString(const char* utf8_string_raw, std::size_t buf_size) : data_(utf8_string_raw, buf_size) {
+    // do nothing
+  }
 
-    DOMString(const std::wstring& data);
+  DomString(const std::wstring& data);
 
-    DOMString(const wchar_t* data);
-    
-    DOMString(const wchar_t* data, std::size_t buf_size);
+  DomString(const wchar_t* data);
 
-    bool operator==(const DOMString& another);
+  DomString(const wchar_t* data, std::size_t buf_size);
 
-    bool operator>(const DOMString& another);
+  bool operator!=(const DomString& another);
 
-    bool operator>=(const DOMString& another);
+  bool operator==(const DomString& another);
 
-    bool operator<(const DOMString& another);
+  bool operator>(const DomString& another);
 
-    bool operator<=(const DOMString& another);
+  bool operator>=(const DomString& another);
 
-    std::size_t ChararcterCount() const;
+  bool operator<(const DomString& another);
 
-    std::size_t ByteCount() const;
+  bool operator<=(const DomString& another);
 
-    int CharAt(std::size_t index) const;
+  std::size_t ChararcterCount() const;
 
-    char ByteAt(std::size_t index) const;
+  std::size_t ByteCount() const;
 
-    DOMString ToLower() const;
+  int CharAt(std::size_t index) const;
 
-    DOMString ToUpper() const;
+  char ByteAt(std::size_t index) const;
+
+  DomString Transform(std::function<char(const char&)>) const;
+
+  DomString ToLower() const;
+
+  DomString ToUpper() const;
 
 private:
-    utf8string data_;
+  Utf8String data_;
 };
 
 NAMESPACE_END

@@ -2,56 +2,61 @@
 #define TINYSVG_SVG_SVGRECT_H_
 
 #include "../Config.h"
-#include "./SVGLength.h"
-#include "./SVGBase.h"
+#include "./SvgBase.h"
 
 NAMESPACE_BEGIN
 
-class SVGRect: public SVGBase {
+class SvgRect : public SvgBase {
 public:
-    SVGRect(SVGLength x, SVGLength y, SVGLength width, SVGLength height, SVGLength rx, SVGLength ry)
-        :SVGBase(SVGType::SVGRectangle),
-        x_(x),
-        y_(y),
-        width_(width),
-        height_(height),
-        rx_(rx),
-        ry_(ry)
-    {
+  SvgRect(SvgLength x, SvgLength y, SvgLength width, SvgLength height, SvgLength rx, SvgLength ry)
+    :SvgBase(SvgType::SvgRectangle),
+    x_(x),
+    y_(y),
+    width_(width),
+    height_(height),
+    rx_(rx),
+    ry_(ry)
+  {
 
-    }
+  }
 
-    SVGLength X() const { return x_; }
+  SvgRect()
+    : SvgRect(0, 0, 0, 0, 0, 0)
+  {
 
-    void SetX(SVGLength value) { x_ = value; }
+  }
 
-    SVGLength Y() const { return y_; }
+  SvgLength X() const { return x_; }
 
-    void SetY(SVGLength value) { y_ = value; }
+  void SetX(SVGLength value) { x_ = value; }
 
-    SVGLength Width() const { return width_; }
+  SVGLength Y() const { return y_; }
 
-    void SetWidth(SVGLength value) { width_ = value; }
+  void SetY(SVGLength value) { y_ = value; }
 
-    SVGLength Heigth() const { return height_; }
+  SVGLength Width() const { return width_; }
 
-    void SetHeight(SVGLength value) { height_ = value; }
+  void SetWidth(SVGLength value) { width_ = value; }
 
-    SVGLength RX() const { return rx_; }
+  SVGLength Heigth() const { return height_; }
 
-    void SetRX(SVGLength value) { rx_ = value; }
+  void SetHeight(SVGLength value) { height_ = value; }
 
-    SVGLength RY() const { return ry_; }
+  SVGLength RX() const { return rx_; }
 
-    void SetRY(SVGLength value) { ry_ = value; }
+  void SetRX(SVGLength value) { rx_ = value; }
+
+  SVGLength RY() const { return ry_; }
+
+  void SetRY(SVGLength value) { ry_ = value; }
 
 private:
-    SVGLength x_;
-    SVGLength y_;
-    SVGLength width_;
-    SVGLength height_;
-    SVGLength rx_;
-    SVGLength ry_;
+  SVGLength x_;
+  SVGLength y_;
+  SVGLength width_;
+  SVGLength height_;
+  SVGLength rx_;
+  SVGLength ry_;
 };
 
 NAMESPACE_END
