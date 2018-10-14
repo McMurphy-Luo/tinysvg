@@ -13,10 +13,13 @@
 
 NAMESPACE_BEGIN
 
+typedef std::string utf8string;
+
 /*
  * DOMString is not normative. Corresponding to w3c standard, DOMString should be implemented as Sequence<char16_t>
  * However, I dislike UTF16. This DOMString is implemented as Utf8 string, interally its data is stored in std::string.
- * All Unicode function is implemented by low level operation system provided function such as MultiByteToWideChar on windows.
+ * All Unicode function is implemented by operation system provided functions such as MultiByteToWideChar on windows.
+ * No Unicode library is required.
  */
 class DOMString {
 public:
@@ -24,21 +27,19 @@ public:
 
     }
 
-    DOMString(const std::string& data): data_(data) {
+    DOMString(const utf8string& another): data_(another) {
         // do nothing
     }
 
-    DOMString(const char* data): data_(data) {
+    DOMString(const char* utf8_string_raw): data_(utf8_string_raw) {
         // do nothing
     }
 
-    DOMString(const char* data, std::size_t buf_size) : data_(data, buf_size) {
+    DOMString(const char* utf8_string_raw, std::size_t buf_size) : data_(utf8_string_raw, buf_size) {
         // do nothing
     }
 
-    DOMString(const std::wstring& data) : DOMString(data.c_str()) {
-        // do nothing
-    }
+    DOMString(const std::wstring& data);
 
     DOMString(const wchar_t* data);
     
@@ -67,7 +68,7 @@ public:
     DOMString ToUpper() const;
 
 private:
-    std::string data_;
+    utf8string data_;
 };
 
 NAMESPACE_END

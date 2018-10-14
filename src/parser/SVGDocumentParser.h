@@ -15,6 +15,8 @@ public:
     }
 
     std::pair<bool, SVGSVG> Parse(const char* buffer, std::size_t buffer_size);
+
+    std::pair<bool, SVGSVG> Parse()
 };
 
 NAMESPACE_END
