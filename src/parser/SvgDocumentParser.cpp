@@ -69,7 +69,6 @@ pair<bool, SvgSvg> SVGDocumentParser::Parse(const char* buffer, size_t buffer_si
     return make_pair(true, SvgSvg());
   }
   SvgSvg theSVGObject;
-
   for (XMLElement* element = root->FirstChildElement(); element; element = element->NextSiblingElement()) {
 
   }

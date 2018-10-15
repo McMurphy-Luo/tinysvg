@@ -3,7 +3,6 @@
 
 #include "../Config.h"
 #include <vector>
-#include "./SVGPoint.h"
 
 NAMESPACE_BEGIN
 

@@ -2,9 +2,9 @@
 #define TINYSVG_SVG_SVGSVG_H_
 
 #include "../Config.h"
-#include "./SvgBase.h"
 #include <vector>
 #include <memory>
+#include "./SvgBase.h"
 
 NAMESPACE_BEGIN
 
