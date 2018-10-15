@@ -1,19 +1,38 @@
 #include "./DomString.h"
 #include <algorithm>
+#include <cassert>
 
 #ifdef TINYSVG_WIN32
 #include <Windows.h>
 #endif
 
 using std::size_t;
+using std::transform;
+using std::function;
+using std::wstring;
 
 NAMESPACE_BEGIN
+
+Utf8String WideStringToUtf8String(wstring source)
+{
+#ifdef TINYSVG_WIN32
+  int size_required = WideCharToMultiByte(CP_UTF8, 0, source.c_str(), -1, nullptr, 0, nullptr, nullptr);
+  char* buffer = new char[size_required];
+  int size_written = WideCharToMultiByte(CP_UTF8, 0, source.c_str(), -1, buffer, size_required, nullptr, nullptr);
+  assert(size_written == size_required);
+  Utf8String result(buffer);
+  delete[] buffer;
+  return result;
+#else // TINYSVG_WIN32
+  #error "current platform not support by now"
+#endif
+}
 
 DomString::DomString(const wchar_t* data) {
     
 }
 
-DomString::DomString(const wchar_t* data, std::size_t buf_size) {
+DomString::DomString(const wchar_t* data, size_t buf_size) {
 
 }
 
@@ -53,9 +72,9 @@ char DomString::ByteAt(size_t index) const {
     return data_.at(index);
 }
 
-DomString DomString::Transform(std::function<char(const char&)> unary) const {
+DomString DomString::Transform(function<char(const char&)> unary) const {
   char* buf = new char[data_.length()];
-  std::transform(data_.cbegin(), data_.cend(), buf, unary);
+  transform(data_.cbegin(), data_.cend(), buf, unary);
   DomString result(buf, data_.length());
   delete[] buf;
   return result;

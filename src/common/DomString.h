@@ -16,7 +16,7 @@ NAMESPACE_BEGIN
 
 typedef std::string Utf8String;
 
-Utf8String WideStringToUtf8String();
+Utf8String WideStringToUtf8String(std::wstring source);
 
 /*
  * DOMString is not normative. Corresponding to w3c standard, DOMString should be implemented as Sequence<char16_t>
