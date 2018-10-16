@@ -11,6 +11,7 @@
 #include "../Config.h"
 #include <string>
 #include <functional>
+#include <vector>
 
 NAMESPACE_BEGIN
 
@@ -65,6 +66,8 @@ public:
   std::size_t ChararcterCount() const;
 
   std::size_t ByteCount() const;
+
+  std::vector<DomString> Split() const;
 
   int CharAt(std::size_t index) const;
 

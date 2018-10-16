@@ -10,11 +10,11 @@ NAMESPACE_BEGIN
 
 class SVGDocumentParser {
 public:
-    SVGDocumentParser() {
+  SVGDocumentParser() {
 
-    }
+  }
 
-    std::pair<bool, SvgSvg> Parse(const char* buffer, std::size_t buffer_size);
+  std::pair<bool, SvgSvg> Parse(const char* buffer, std::size_t buffer_size);
 };
 
 NAMESPACE_END
