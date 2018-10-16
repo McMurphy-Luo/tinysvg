@@ -4,28 +4,35 @@
 using std::vector;
 using std::pair;
 using std::size_t;
+using std::isspace;
 
 
 namespace // unamed namespace for this file static staff
 {
-
-  enum class NumberListParserState {
-    kInit,
-    kBad,
-    k
-  };
-
   class NumberListParserStateMachine
   {
+    enum class NumberListParserState {
+      kInit,
+      kBad,
+      k
+    };
+
   public:
     bool Consume(char next_char);
 
   private:
-    
+    NumberListParserState current_state_;
   };
 
   bool NumberListParserStateMachine::Consume(char next_char)
   {
+    if (current_state_ == NumberListParserState::kBad) {
+      return false;
+    }
+
+    if (current_state_ == NumberListParserState::kInit) {
+      
+    }
     return true;
   }
 }
