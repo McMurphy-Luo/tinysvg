@@ -10,10 +10,15 @@ using std::size_t;
 using std::transform;
 using std::function;
 using std::wstring;
+using std::vector;
 
 NAMESPACE_BEGIN
 
-Utf8String WideStringToUtf8String(wstring source)
+Utf8String WideStringToUtf8String(const wchar_t* data) {
+  return WideStringToUtf8String(data);
+}
+
+Utf8String WideStringToUtf8String(const wstring& source)
 {
 #ifdef TINYSVG_WIN32
   int size_required = WideCharToMultiByte(CP_UTF8, 0, source.c_str(), -1, nullptr, 0, nullptr, nullptr);
@@ -28,8 +33,10 @@ Utf8String WideStringToUtf8String(wstring source)
 #endif
 }
 
-DomString::DomString(const wchar_t* data) {
-    
+DomString::DomString(const wchar_t* data)
+: data_(WideStringToUtf8String(data))
+{
+
 }
 
 DomString::DomString(const wchar_t* data, size_t buf_size) {
@@ -40,12 +47,16 @@ bool DomString::operator==(const DomString& another) {
     return data_ == another.data_;
 }
 
+bool DomString::operator!=(const DomString& another) {
+  return data_ != another.data_;
+}
+
 bool DomString::operator>(const DomString& another) {
-  return true;
+  return data_ > another.data_;
 }
 
 bool DomString::operator>=(const DomString& another) {
-  return true;
+  return data_ >= another.data_;
 }
 
 bool DomString::operator<(const DomString& another) {
@@ -70,6 +81,14 @@ int DomString::CharAt(size_t index) const {
 
 char DomString::ByteAt(size_t index) const {
     return data_.at(index);
+}
+
+vector<DomString> DomString::Split() const {
+
+  
+
+
+  return vector<DomString>();
 }
 
 DomString DomString::Transform(function<char(const char&)> unary) const {
