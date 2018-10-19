@@ -67,7 +67,9 @@ public:
 
   std::size_t ByteCount() const;
 
-  std::vector<DomString> Split() const;
+  std::vector<DomString> Split(char the_byte) const;
+
+  std::vector<DomString> Split(int the_character) const;
 
   int CharAt(std::size_t index) const;
 

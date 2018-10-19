@@ -83,10 +83,19 @@ char DomString::ByteAt(size_t index) const {
     return data_.at(index);
 }
 
-vector<DomString> DomString::Split() const {
+vector<DomString> DomString::Split(char the_char) const {
+  vector<DomString> result;
+
+  Utf8String::const_iterator iterator = data_.begin();
+  Utf8String::const_iterator warden = data_.begin();
 
   
 
+  for (; iterator != data_.cend(); ++iterator) {
+    if (*iterator == the_char) {
+
+    }
+  }
 
   return vector<DomString>();
 }
