@@ -17,7 +17,9 @@ NAMESPACE_BEGIN
 
 typedef std::string Utf8String;
 
-Utf8String WideStringToUtf8String(std::wstring source);
+Utf8String WideStringToUtf8String(const std::wstring& source);
+
+std::wstring Utf8StringToWideString(const Utf8String& source);
 
 /*
  * DOMString is not normative. Corresponding to w3c standard, DOMString should be implemented as Sequence<char16_t>
@@ -37,43 +39,53 @@ public:
     // do nothing
   }
 
-  DomString(const char* utf8_string_raw) : data_(utf8_string_raw) {
+  DomString(const char* utf8_string_raw, std::size_t buf_size)
+  : data_(utf8_string_raw, buf_size)
+  {
     // do nothing
   }
 
-  DomString(const char* utf8_string_raw, std::size_t buf_size) : data_(utf8_string_raw, buf_size) {
-    // do nothing
+  DomString(const wchar_t* data)
+  : data_(WideStringToUtf8String(data))
+  {
+
   }
 
-  DomString(const std::wstring& data);
+  DomString(const wchar_t* data, size_t buf_size)
+  : data_(WideStringToUtf8String(wstring(data, buf_size)))
+  {
 
-  DomString(const wchar_t* data);
+  }
 
-  DomString(const wchar_t* data, std::size_t buf_size);
+  operator Utf8String() { return data_; }
 
-  bool operator!=(const DomString& another);
+  operator std::wstring() { return Utf8StringToWideString(data_); }
 
-  bool operator==(const DomString& another);
+  bool operator!=(const DomString& another) { return data_ != another.data_; }
 
-  bool operator>(const DomString& another);
+  bool operator==(const DomString& another) { return data_ == another.data_; }
 
-  bool operator>=(const DomString& another);
+  bool operator>(const DomString& another) { return data_ > another.data_; }
 
-  bool operator<(const DomString& another);
+  bool operator>=(const DomString& another) { return data_ >= another.data_; }
 
-  bool operator<=(const DomString& another);
+  bool operator<(const DomString& another) { return data_ < another.data_; }
+
+  bool operator<=(const DomString& another) { return data_ <= another.data_; }
+
+  void PushBack(char the_char) { data_.push_back(the_char); }
 
   std::size_t ChararcterCount() const;
 
-  std::size_t ByteCount() const;
+  std::size_t ByteCount() const { return data_.length(); }
 
-  std::vector<DomString> Split(char the_byte) const;
+  void Clear() { data_.clear(); }
 
-  std::vector<DomString> Split(int the_character) const;
+  std::vector<DomString> Split(const DomString& splitter) const;
 
   int CharAt(std::size_t index) const;
 
-  char ByteAt(std::size_t index) const;
+  char ByteAt(std::size_t index) const { return data_.at(index); }
 
   DomString Transform(std::function<char(const char&)>) const;
 
