@@ -3,19 +3,21 @@
 
 #include "../Config.h"
 #include <vector>
+#include "./SvgBase.h"
 
 NAMESPACE_BEGIN
 
 class SVGPolyline {
 public:
-    SVGPolyline(const std::vector<SVGPoint>& points):points_(points) {
+    SVGPolyline(const std::vector<SvgPoint>& points)
+    : points_(points) {
 
     }
 
-    std::vector<SVGPoint> Points() { return points_; }
+    std::vector<SvgPoint> Points() { return points_; }
 
 private:
-    std::vector<SVGPoint> points_;
+    std::vector<SvgPoint> points_;
 };
 
 NAMESPACE_END

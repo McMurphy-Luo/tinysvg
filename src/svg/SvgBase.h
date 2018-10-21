@@ -19,6 +19,11 @@ enum class SvgType {
   SvgPolyline
 };
 
+struct SvgPoint {
+  SvgLength x;
+  SvgLength y;
+};
+
 class SvgBase {
 public:
   SvgBase(SvgType type) {

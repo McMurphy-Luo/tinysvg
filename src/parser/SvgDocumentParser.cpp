@@ -18,16 +18,17 @@ NAMESPACE_BEGIN
 
 namespace { // unamed namespace for this file static staff
   shared_ptr<SvgSvg> ParseSvgElement(XMLElement* element) {
-
+    return nullptr;
   }
 
   shared_ptr<SvgRect> ParseSvgRect(XMLElement* element) {
-
+    return nullptr;
   }
 
   shared_ptr<SvgLine> ParseSVGLine(XMLElement* element) {
     DomString element_name(element->Name());
     assert(element_name == "line");
+    return nullptr;
   }
 
   shared_ptr<SvgBase> ParseElement(XMLElement* element) {
@@ -49,10 +50,6 @@ namespace { // unamed namespace for this file static staff
   }
 } // end unamed namespace
 
-SVGDocumentParser::SVGDocumentParser() {
-  // do nothing for now
-}
-
 pair<bool, SvgSvg> SVGDocumentParser::Parse(const char* buffer, size_t buffer_size) {
   tinyxml2::XMLDocument document;
   tinyxml2::XMLError error = document.Parse(buffer, buffer_size);
@@ -72,6 +69,8 @@ pair<bool, SvgSvg> SVGDocumentParser::Parse(const char* buffer, size_t buffer_si
   for (XMLElement* element = root->FirstChildElement(); element; element = element->NextSiblingElement()) {
 
   }
+
+  return { false, SvgSvg() };
 }
 
 NAMESPACE_END

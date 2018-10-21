@@ -3,7 +3,7 @@
 NAMESPACE_BEGIN
 
 bool ParseColorFromString(const DomString& target, SVGColor& output) {
-    if (target.CharacterCount() != 4 && target.CharacterCount() != 5 && target.CharacterCount() != 7 && target.CharacterCount() != 9) {
+    if (target.ChararcterCount() != 4 && target.ChararcterCount() != 5 && target.ChararcterCount() != 7 && target.ChararcterCount() != 9) {
         return false;
     }
     if (target.CharAt(0) != '#') {
@@ -13,10 +13,6 @@ bool ParseColorFromString(const DomString& target, SVGColor& output) {
     double green = 0;
     double blue = 0;
     double alpha = 0;
-    return true;
-}
-
-bool ParseColorFromString(const Utf8String& target, ColorF& output) {
     return true;
 }
 

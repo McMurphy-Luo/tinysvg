@@ -11,7 +11,7 @@ NAMESPACE_BEGIN
 class SVGDocumentParser {
 public:
   SVGDocumentParser() {
-
+    // do nothing for now
   }
 
   std::pair<bool, SvgSvg> Parse(const char* buffer, std::size_t buffer_size);

@@ -28,35 +28,35 @@ public:
 
   SvgLength X() const { return x_; }
 
-  void SetX(SVGLength value) { x_ = value; }
+  void SetX(SvgLength value) { x_ = value; }
 
-  SVGLength Y() const { return y_; }
+  SvgLength Y() const { return y_; }
 
-  void SetY(SVGLength value) { y_ = value; }
+  void SetY(SvgLength value) { y_ = value; }
 
-  SVGLength Width() const { return width_; }
+  SvgLength Width() const { return width_; }
 
-  void SetWidth(SVGLength value) { width_ = value; }
+  void SetWidth(SvgLength value) { width_ = value; }
 
-  SVGLength Heigth() const { return height_; }
+  SvgLength Heigth() const { return height_; }
 
-  void SetHeight(SVGLength value) { height_ = value; }
+  void SetHeight(SvgLength value) { height_ = value; }
 
-  SVGLength RX() const { return rx_; }
+  SvgLength RX() const { return rx_; }
 
-  void SetRX(SVGLength value) { rx_ = value; }
+  void SetRX(SvgLength value) { rx_ = value; }
 
-  SVGLength RY() const { return ry_; }
+  SvgLength RY() const { return ry_; }
 
-  void SetRY(SVGLength value) { ry_ = value; }
+  void SetRY(SvgLength value) { ry_ = value; }
 
 private:
-  SVGLength x_;
-  SVGLength y_;
-  SVGLength width_;
-  SVGLength height_;
-  SVGLength rx_;
-  SVGLength ry_;
+  SvgLength x_;
+  SvgLength y_;
+  SvgLength width_;
+  SvgLength height_;
+  SvgLength rx_;
+  SvgLength ry_;
 };
 
 NAMESPACE_END

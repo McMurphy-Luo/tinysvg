@@ -8,7 +8,7 @@
   #endif
 
   #ifndef NAMESPACE_BEGIN
-    #define NAMESPACE_BEGIN namespace PAKCAGE_NAMESPACE {
+    #define NAMESPACE_BEGIN namespace PACKAGE_NAMESPACE {
   #else
     #error Macro conflicts. You have already defined NAMESPACE_BEGIN.
   #endif

@@ -44,6 +44,11 @@ wstring Utf8StringToWideString(const Utf8String& source)
 #endif
 }
 
+std::ostream& operator<<(std::ostream& target, const DomString& value)
+{
+  return target << value.data_;
+}
+
 size_t DomString::ChararcterCount() const {
   return 0;
 }
@@ -75,12 +80,12 @@ vector<DomString> DomString::Split(const DomString& splitter) const {
       current.Clear();
       warden += walker;
     } else {
-      current.PushBack(CharAt(warden));
+      current.PushBack(ByteAt(warden));
       ++warden;
     }
   }
   result.push_back(current);
-  return vector<DomString>();
+  return result;
 }
 
 DomString DomString::Transform(function<char(const char&)> unary) const {

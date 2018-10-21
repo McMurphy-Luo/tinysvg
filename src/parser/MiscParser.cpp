@@ -45,7 +45,7 @@ namespace // unamed namespace for this file static staff
 
   bool NumberListParserStateMachine::ConsumeFirst(char next_char) {
     assert(current_state_ == NumberListParserState::kInit);
-
+    return false;
   }
 
   bool NumberListParserStateMachine::Consume(char next_char)
@@ -95,6 +95,7 @@ pair<bool, vector<SvgLength>> ParseNumberList(const DomString& from)
     isdigit(the_byte);
     
   }
+  return { false, vector<SvgLength>() };
 }
 
 NAMESPACE_END

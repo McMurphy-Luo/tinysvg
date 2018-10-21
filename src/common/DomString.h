@@ -12,6 +12,7 @@
 #include <string>
 #include <functional>
 #include <vector>
+#include <ostream>
 
 NAMESPACE_BEGIN
 
@@ -20,6 +21,10 @@ typedef std::string Utf8String;
 Utf8String WideStringToUtf8String(const std::wstring& source);
 
 std::wstring Utf8StringToWideString(const Utf8String& source);
+
+class DomString;
+
+std::ostream& operator<<(std::ostream& target, const DomString& value);
 
 /*
  * DOMString is not normative. Corresponding to w3c standard, DOMString should be implemented as Sequence<char16_t>
@@ -41,6 +46,12 @@ public:
     // do nothing
   }
 
+  DomString(const char* raw_string)
+  : data_(raw_string)
+  {
+
+  }
+
   DomString(const char* utf8_string_raw, std::size_t buf_size)
   : data_(utf8_string_raw, buf_size)
   {
@@ -54,7 +65,7 @@ public:
   }
 
   DomString(const wchar_t* data, size_t buf_size)
-  : data_(WideStringToUtf8String(wstring(data, buf_size)))
+  : data_(WideStringToUtf8String(std::wstring(data, buf_size)))
   {
 
   }
@@ -94,6 +105,8 @@ public:
   DomString ToLower() const;
 
   DomString ToUpper() const;
+
+  friend std::ostream& operator<<(std::ostream& target, const DomString& value);
 
 private:
   Utf8String data_;

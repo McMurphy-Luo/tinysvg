@@ -10,7 +10,7 @@ NAMESPACE_BEGIN
 
 class SVGColor;
 
-bool ParseColorFromString(const DOMString& target, SVGColor& output);
+bool ParseColorFromString(const DomString& target, SVGColor& output);
 
 class SVGColor {
 public:
