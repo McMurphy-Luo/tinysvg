@@ -30,12 +30,14 @@ std::wstring Utf8StringToWideString(const Utf8String& source);
 class DomString {
 public:
   DomString()
-  : data_() {
+  : data_()
+  {
 
   }
 
   DomString(const Utf8String& another)
-  : data_(another) {
+  : data_(another)
+  {
     // do nothing
   }
 
