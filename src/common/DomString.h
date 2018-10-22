@@ -26,6 +26,8 @@ class DomString;
 
 std::ostream& operator<<(std::ostream& target, const DomString& value);
 
+bool operator==(const DomString& left, const DomString& right);
+
 /*
  * DOMString is not normative. Corresponding to w3c standard, DOMString should be implemented as Sequence<char16_t>
  * However, I dislike UTF16. This DOMString is implemented as Utf8 string, interally its data is stored in std::string.
@@ -76,8 +78,6 @@ public:
 
   bool operator!=(const DomString& another) { return data_ != another.data_; }
 
-  bool operator==(const DomString& another) { return data_ == another.data_; }
-
   bool operator>(const DomString& another) { return data_ > another.data_; }
 
   bool operator>=(const DomString& another) { return data_ >= another.data_; }
@@ -107,6 +107,8 @@ public:
   DomString ToUpper() const;
 
   friend std::ostream& operator<<(std::ostream& target, const DomString& value);
+
+  friend bool operator==(const DomString& left, const DomString& right);
 
 private:
   Utf8String data_;

@@ -49,6 +49,10 @@ std::ostream& operator<<(std::ostream& target, const DomString& value)
   return target << value.data_;
 }
 
+bool operator==(const DomString& left, const DomString& right) {
+  return left.data_ == right.data_;
+}
+
 size_t DomString::ChararcterCount() const {
   return 0;
 }
@@ -78,7 +82,7 @@ vector<DomString> DomString::Split(const DomString& splitter) const {
     if (walker == splitter.data_.size()) {
       result.push_back(current);
       current.Clear();
-      warden += walker;
+      warden += max(walker, 1);
     } else {
       current.PushBack(ByteAt(warden));
       ++warden;
