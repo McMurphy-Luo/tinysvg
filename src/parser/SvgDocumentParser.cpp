@@ -17,21 +17,25 @@ using tinyxml2::XMLNode;
 NAMESPACE_BEGIN
 
 namespace { // unamed namespace for this file static staff
-  shared_ptr<SvgSvg> ParseSvgElement(XMLElement* element) {
+  shared_ptr<SvgSvg> ParseSvgElement(XMLElement* element)
+  {
     return nullptr;
   }
 
-  shared_ptr<SvgRect> ParseSvgRect(XMLElement* element) {
+  shared_ptr<SvgRect> ParseSvgRect(XMLElement* element)
+  {
     return nullptr;
   }
 
-  shared_ptr<SvgLine> ParseSVGLine(XMLElement* element) {
+  shared_ptr<SvgLine> ParseSVGLine(XMLElement* element)
+  {
     DomString element_name(element->Name());
     assert(element_name == "line");
     return nullptr;
   }
 
-  shared_ptr<SvgBase> ParseElement(XMLElement* element) {
+  shared_ptr<SvgBase> ParseElement(XMLElement* element)
+  {
     DomString element_name(element->Name());
     DomString element_name_lowered = element_name.ToLower();
     if (element_name_lowered == "SVG") {
@@ -50,7 +54,8 @@ namespace { // unamed namespace for this file static staff
   }
 } // end unamed namespace
 
-pair<bool, SvgSvg> SVGDocumentParser::Parse(const char* buffer, size_t buffer_size) {
+pair<bool, SvgSvg> SVGDocumentParser::Parse(const char* buffer, size_t buffer_size)
+{
   tinyxml2::XMLDocument document;
   tinyxml2::XMLError error = document.Parse(buffer, buffer_size);
   if (error != XML_SUCCESS) {

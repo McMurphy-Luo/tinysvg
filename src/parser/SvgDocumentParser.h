@@ -10,7 +10,8 @@ NAMESPACE_BEGIN
 
 class SVGDocumentParser {
 public:
-  SVGDocumentParser() {
+  SVGDocumentParser()
+  {
     // do nothing for now
   }
 

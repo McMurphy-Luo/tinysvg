@@ -2,7 +2,8 @@
 
 NAMESPACE_BEGIN
 
-bool ParseColorFromString(const DomString& target, SVGColor& output) {
+bool ParseColorFromString(const DomString& target, SVGColor& output)
+{
     if (target.ChararcterCount() != 4 && target.ChararcterCount() != 5 && target.ChararcterCount() != 7 && target.ChararcterCount() != 9) {
         return false;
     }

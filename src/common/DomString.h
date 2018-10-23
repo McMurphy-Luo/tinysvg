@@ -26,7 +26,19 @@ class DomString;
 
 std::ostream& operator<<(std::ostream& target, const DomString& value);
 
-bool operator==(const DomString& left, const DomString& right);
+bool operator==(const DomString& lhs, const DomString& rhs);
+
+bool operator!=(const DomString& lhs, const DomString& rhs);
+
+bool operator==(const DomString& lhs, const DomString& rhs);
+
+bool operator>(const DomString& lhs, const DomString& rhs);
+
+bool operator>=(const DomString& lhs, const DomString& rhs);
+
+bool operator<(const DomString& lhs, const DomString& rhs);
+
+bool operator<=(const DomString& lhs, const DomString& rhs);
 
 /*
  * DOMString is not normative. Corresponding to w3c standard, DOMString should be implemented as Sequence<char16_t>
@@ -35,6 +47,20 @@ bool operator==(const DomString& left, const DomString& right);
  * No Unicode library is required.
  */
 class DomString {
+  friend std::ostream& operator<<(std::ostream& target, const DomString& value);
+
+  friend bool operator!=(const DomString& lhs, const DomString& rhs);
+
+  friend bool operator==(const DomString& lhs, const DomString& rhs);
+
+  friend bool operator>(const DomString& lhs, const DomString& rhs);
+
+  friend bool operator>=(const DomString& lhs, const DomString& rhs);
+
+  friend bool operator<(const DomString& lhs, const DomString& rhs);
+
+  friend bool operator<=(const DomString& lhs, const DomString& rhs);
+
 public:
   DomString()
   : data_()
@@ -46,6 +72,12 @@ public:
   : data_(another)
   {
     // do nothing
+  }
+
+  DomString(std::size_t count, char the_char)
+  : data_(count, the_char)
+  {
+
   }
 
   DomString(const char* raw_string)
@@ -76,16 +108,6 @@ public:
 
   operator std::wstring() { return Utf8StringToWideString(data_); }
 
-  bool operator!=(const DomString& another) { return data_ != another.data_; }
-
-  bool operator>(const DomString& another) { return data_ > another.data_; }
-
-  bool operator>=(const DomString& another) { return data_ >= another.data_; }
-
-  bool operator<(const DomString& another) { return data_ < another.data_; }
-
-  bool operator<=(const DomString& another) { return data_ <= another.data_; }
-
   void PushBack(char the_char) { data_.push_back(the_char); }
 
   std::size_t ChararcterCount() const;
@@ -105,10 +127,6 @@ public:
   DomString ToLower() const;
 
   DomString ToUpper() const;
-
-  friend std::ostream& operator<<(std::ostream& target, const DomString& value);
-
-  friend bool operator==(const DomString& left, const DomString& right);
 
 private:
   Utf8String data_;

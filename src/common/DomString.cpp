@@ -49,20 +49,56 @@ std::ostream& operator<<(std::ostream& target, const DomString& value)
   return target << value.data_;
 }
 
-bool operator==(const DomString& left, const DomString& right) {
-  return left.data_ == right.data_;
+bool operator==(const DomString& lhs, const DomString& rhs)
+{
+  return lhs.data_ == rhs.data_;
 }
 
-size_t DomString::ChararcterCount() const {
+bool operator!=(const DomString& lhs, const DomString& rhs)
+{
+  return lhs.data_ != rhs.data_;
+}
+
+bool operator>(const DomString& lhs, const DomString& rhs)
+{
+  return lhs.data_ > rhs.data_;
+}
+
+bool operator>=(const DomString& lhs, const DomString& rhs)
+{
+  return lhs.data_ >= rhs.data_;
+}
+
+bool operator<(const DomString& lhs, const DomString& rhs)
+{
+  return lhs.data_ < rhs.data_;
+}
+
+bool operator<=(const DomString& lhs, const DomString& rhs)
+{
+  return lhs.data_ <= rhs.data_;
+}
+
+size_t DomString::ChararcterCount() const
+{
   return 0;
 }
 
-int DomString::CharAt(size_t index) const {
+int DomString::CharAt(size_t index) const
+{
   return 0;
 }
 
-vector<DomString> DomString::Split(const DomString& splitter) const {
+vector<DomString> DomString::Split(const DomString& splitter) const
+{
   vector<DomString> result;
+  if (splitter.data_.size() == 0) {
+    for (const char& the_char : data_) {
+      result.push_back(DomString(1, the_char));
+    }
+    return result;
+  }
+
   DomString current;
   size_t warden = 0;
   while (warden < data_.size()) {
@@ -82,7 +118,7 @@ vector<DomString> DomString::Split(const DomString& splitter) const {
     if (walker == splitter.data_.size()) {
       result.push_back(current);
       current.Clear();
-      warden += max(walker, 1);
+      warden += walker;
     } else {
       current.PushBack(ByteAt(warden));
       ++warden;
@@ -92,7 +128,8 @@ vector<DomString> DomString::Split(const DomString& splitter) const {
   return result;
 }
 
-DomString DomString::Transform(function<char(const char&)> unary) const {
+DomString DomString::Transform(function<char(const char&)> unary) const
+{
   char* buf = new char[data_.length()];
   transform(data_.cbegin(), data_.cend(), buf, unary);
   DomString result(buf, data_.length());
@@ -100,13 +137,15 @@ DomString DomString::Transform(function<char(const char&)> unary) const {
   return result;
 }
 
-DomString DomString::ToLower() const {
+DomString DomString::ToLower() const
+{
   return Transform([](const char& the_char) -> char {
     return tolower(the_char);
   });
 }
 
-DomString DomString::ToUpper() const {
+DomString DomString::ToUpper() const
+{
   return Transform([](const char& the_char) -> char {
     return toupper(the_char);
   });

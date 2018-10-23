@@ -13,7 +13,8 @@ namespace // unamed namespace for this file static staff
 {
   class NumberListParserStateMachine
   {
-    enum class NumberListParserState {
+    enum class NumberListParserState
+    {
       kInit,
       kBad,
       kComma,
@@ -43,7 +44,8 @@ namespace // unamed namespace for this file static staff
     int positive_or_negtive_; // -1 for negtive 1 for positive
   };
 
-  bool NumberListParserStateMachine::ConsumeFirst(char next_char) {
+  bool NumberListParserStateMachine::ConsumeFirst(char next_char)\
+  {
     assert(current_state_ == NumberListParserState::kInit);
     return false;
   }
