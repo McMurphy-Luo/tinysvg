@@ -30,7 +30,7 @@ namespace { // unamed namespace for this file static staff
   shared_ptr<SvgLine> ParseSVGLine(XMLElement* element)
   {
     DomString element_name(element->Name());
-    assert(element_name == "line");
+    assert(element_name == u8"line");
     return nullptr;
   }
 
@@ -38,13 +38,13 @@ namespace { // unamed namespace for this file static staff
   {
     DomString element_name(element->Name());
     DomString element_name_lowered = element_name.ToLower();
-    if (element_name_lowered == "SVG") {
+    if (element_name_lowered == u8"SVG") {
       return ParseSvgElement(element);
     }
-    else if (element_name_lowered == "rect") {
+    else if (element_name_lowered == u8"rect") {
       return ParseSvgRect(element);
     }
-    else if (element_name_lowered == "line") {
+    else if (element_name_lowered == u8"line") {
       return ParseSVGLine(element);
     }
     else {
@@ -63,10 +63,10 @@ pair<bool, SvgSvg> SVGDocumentParser::Parse(const char* buffer, size_t buffer_si
   }
   XMLElement* root = document.RootElement();
   DomString nodeName(root->Name());
-  if (nodeName.ToLower() != "svg") {
+  if (nodeName.ToLower() != u8"svg") {
     return make_pair(false, SvgSvg());
   }
-  const char* viewBox = root->Attribute("viewBox");
+  const char* viewBox = root->Attribute(u8"viewBox");
   if (root->NoChildren()) {
     return make_pair(true, SvgSvg());
   }

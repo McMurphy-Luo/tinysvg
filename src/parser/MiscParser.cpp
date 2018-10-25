@@ -62,13 +62,13 @@ namespace // unamed namespace for this file static staff
         return false;
       }
       if (isdigit(next_char)) {
-        current_value_ = next_char - '0';
+        current_value_ = next_char - u8'0';
         return true;
       }
-      if (next_char == '.') {
+      if (next_char == u8'.') {
         
       }
-      if (next_char == '-') {
+      if (next_char == u8'-') {
         positive_or_negtive_ = -1;
       }
     }
