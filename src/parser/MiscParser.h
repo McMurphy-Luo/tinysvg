@@ -9,8 +9,7 @@
 
 NAMESPACE_BEGIN
 
-std::pair<bool, std::vector<SvgLength>> ParseNumberList(const DomString& from);
-
+std::pair<bool, SvgLength> ParseNumeric(const DomString& source);
 
 NAMESPACE_END
 

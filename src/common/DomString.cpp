@@ -1,4 +1,5 @@
 #include "./DomString.h"
+
 #include <algorithm>
 #include <cassert>
 

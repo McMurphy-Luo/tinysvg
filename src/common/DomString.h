@@ -114,6 +114,8 @@ public:
 
   std::size_t ByteCount() const { return data_.length(); }
 
+  const char* Data() const { return data_.c_str(); }
+
   void Clear() { data_.clear(); }
 
   std::vector<DomString> Split(const DomString& splitter) const;
