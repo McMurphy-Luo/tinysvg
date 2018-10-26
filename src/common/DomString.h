@@ -5,8 +5,8 @@
  * Define an class to help manipulate string since std::string is too weak
  */
 
-#ifndef TINYSVG_SVG_DOMSTRING_H_
-#define TINYSVG_SVG_DOMSTRING_H_
+#ifndef TINYSVG_DOMSTRING_H_
+#define TINYSVG_DOMSTRING_H_
 
 #include "../Config.h"
 #include <string>
@@ -136,4 +136,4 @@ private:
 
 NAMESPACE_END
 
-#endif // TINYSVG_SVG_DOMSTRING_H_
+#endif // TINYSVG_DOMSTRING_H_

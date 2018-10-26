@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVG_SVGLINE_H_
-#define TINYSVG_SVG_SVGLINE_H_
+#ifndef TINYSVG_SVGLINE_H_
+#define TINYSVG_SVGLINE_H_
 
 #include "../Config.h"
 #include "./SVGBase.h"
@@ -44,4 +44,4 @@ private:
 
 NAMESPACE_END
 
-#endif // TINYSVG_SVG_SVGLINE_H_
+#endif // TINYSVG_SVGLINE_H_

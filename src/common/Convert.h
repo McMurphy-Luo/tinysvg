@@ -7,9 +7,13 @@
 
 NAMESPACE_BEGIN
 
-std::pair<bool, int> ToInt(const DomString& value);
+std::pair<bool, int> StringToInt(const DomString& value);
 
-std::pair<bool, double> ToDouble(const DomString& value);
+std::pair<bool, double> StringToDouble(const DomString& value);
+
+DomString IntToString(int value);
+
+DomString DoubleToString(double value);
 
 NAMESPACE_END
 

@@ -6,6 +6,7 @@
 #include "../common/DomString.h"
 #include "../svg/SvgRect.h"
 #include "../svg/SvgLine.h"
+#include "../common/Convert.h"
 
 using std::size_t;
 using std::pair;
@@ -32,25 +33,6 @@ namespace { // unamed namespace for this file static staff
     return nullptr;
   }
 
-  shared_ptr<SvgBase> ParseElement(XMLElement* element)
-  {
-    DomString element_name(element->Name());
-    DomString element_name_lowered = element_name.ToLower();
-    if (element_name_lowered == u8"SVG") {
-      return ParseSvgElement(element);
-    }
-    else if (element_name_lowered == u8"rect") {
-      return ParseSvgRect(element);
-    }
-    else if (element_name_lowered == u8"line") {
-      return ParseSVGLine(element);
-    }
-    else {
-      assert(false);
-      return nullptr;
-    }
-  }
-
   pair<bool, SvgSvg> ParseSvgElement(XMLElement* target)
   {
     DomString nodeName(target->Name());
@@ -60,18 +42,16 @@ namespace { // unamed namespace for this file static staff
     }
     
     DomString viewBox = DomString(target->Attribute(u8"viewBox"));
-    
-    vector<DomString> viewBox.Split(",");
-    
-
+    vector<DomString> viewBox_number_separated = viewBox.Split(",");
 
     
-    if (root->NoChildren()) {
-      return make_pair(true, SvgSvg());
+
+    for (const DomString& item : viewBox_number_separated) {
+      StringToDouble(item);
     }
 
-    for (XMLElement* element = root->FirstChildElement(); element; element = element->NextSiblingElement()) {
-
+    if (target->NoChildren()) {
+      return make_pair(true, SvgSvg());
     }
 
     return { false, SvgSvg() };

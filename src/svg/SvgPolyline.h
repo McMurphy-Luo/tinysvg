@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVG_SVGPOLYLINE_H_
-#define TINYSVG_SVG_SVGPOLYLINE_H_
+#ifndef TINYSVG_SVGPOLYLINE_H_
+#define TINYSVG_SVGPOLYLINE_H_
 
 #include "../Config.h"
 #include <vector>
@@ -22,4 +22,4 @@ private:
 
 NAMESPACE_END
 
-#endif // TINYSVG_SVG_SVGPOLYLINE_H_
+#endif // TINYSVG_SVGPOLYLINE_H_

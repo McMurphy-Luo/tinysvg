@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVG_SVGCIRCLE_H_
-#define TINYSVG_SVG_SVGCIRCLE_H_
+#ifndef TINYSVG_SVGCIRCLE_H_
+#define TINYSVG_SVGCIRCLE_H_
 
 #include "../Config.h"
 
@@ -18,4 +18,4 @@ public:
 NAMESPACE_END
 
 
-#endif // TINYSVG_SVG_SVGCIRCLE_H_
+#endif // TINYSVG_SVGCIRCLE_H_

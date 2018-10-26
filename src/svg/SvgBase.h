@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVG_SVGBASE_H_
-#define TINYSVG_SVG_SVGBASE_H_
+#ifndef TINYSVG_SVGBASE_H_
+#define TINYSVG_SVGBASE_H_
 
 #include "../Config.h"
 #include <cmath>
@@ -38,4 +38,4 @@ private:
 
 NAMESPACE_END
 
-#endif // TINYSVG_SVG_SVGBASE_H_
+#endif // TINYSVG_SVGBASE_H_

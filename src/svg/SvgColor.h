@@ -1,5 +1,5 @@
-#ifndef TINYSVG_SVG_SVGCOLOR_H_
-#define TINYSVG_SVG_SVGCOLOR_H_
+#ifndef TINYSVG_SVGCOLOR_H_
+#define TINYSVG_SVGCOLOR_H_
 
 #include "../Config.h"
 #include <cstdint>
@@ -59,4 +59,4 @@ private:
 
 NAMESPACE_END
 
-#endif // TINYSVG_SVG_SVGCOLOR_H_
+#endif // TINYSVG_SVGCOLOR_H_
