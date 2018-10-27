@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cerrno>
 #include <climits>
+#include <string>
 
 using std::strtol;
 using std::strtod;
@@ -11,7 +12,7 @@ using std::pair;
 
 NAMESPACE_BEGIN
 
-pair<bool, int> ToInt(const DomString& value)
+pair<bool, int> StringToInt(const DomString& value)
 {
   int previous_error = errno;
   char* string_end = 0;
@@ -19,11 +20,11 @@ pair<bool, int> ToInt(const DomString& value)
   bool succeeded = false;
   long result = strtol(value.Data(), &string_end, 10);
 
-  if (result == 0 && string_end == value.Data()) {
+  if (string_end == value.Data()) {
     // no conversion can be performed
     succeeded = false;
   }
-  else if (errno == ERANGE && (result == LONG_MAX || result == LONG_MIN)) {
+  else if (errno == ERANGE) {
     succeeded = false;
   }
   else if (result > INT_MAX || result < INT_MIN) {
@@ -36,11 +37,28 @@ pair<bool, int> ToInt(const DomString& value)
   return make_pair(false, 0);
 }
 
-pair<bool, double> ToDouble(const DomString& value)
+pair<bool, double> StringToDouble(const DomString& value)
 {
   int previous_error = errno;
+  char* string_end = 0;
+  errno = 0;
+  bool succeeded = false;
+  double result = strtod(value.Data(), &string_end);
 
-  return make_pair(true, 0);
+  std::stod("fucker");
+
+  if (string_end == value.Data()) {
+    succeeded = false;
+  }
+  else if (errno == ERANGE) {
+    succeeded = false;
+  }
+  errno = previous_error;
+
+  if (succeeded) {
+    return make_pair(true, result);
+  }
+  return make_pair(false, 0.0);
 }
 
 NAMESPACE_END

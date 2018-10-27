@@ -108,21 +108,27 @@ public:
 
   operator std::wstring() { return Utf8StringToWideString(data_); }
 
-  void PushBack(char the_char) { data_.push_back(the_char); }
-
   std::size_t ChararcterCount() const;
 
   std::size_t ByteCount() const { return data_.length(); }
+
+  int CharAt(std::size_t index) const;
+
+  char ByteAt(std::size_t index) const { return data_.at(index); }
 
   const char* Data() const { return data_.c_str(); }
 
   void Clear() { data_.clear(); }
 
+  void PushBack(char the_char) { data_.push_back(the_char); }
+
+  DomString Trim() const;
+
+  DomString TrimLeft() const;
+
+  DomString TrimRight() const;
+
   std::vector<DomString> Split(const DomString& splitter) const;
-
-  int CharAt(std::size_t index) const;
-
-  char ByteAt(std::size_t index) const { return data_.at(index); }
 
   DomString Transform(std::function<char(const char&)>) const;
 

@@ -90,6 +90,21 @@ int DomString::CharAt(size_t index) const
   return 0;
 }
 
+DomString DomString::Trim() const
+{
+  return DomString();
+}
+
+DomString DomString::TrimLeft() const
+{
+  return DomString();
+}
+
+DomString DomString::TrimRight() const
+{
+  return DomString();
+}
+
 vector<DomString> DomString::Split(const DomString& splitter) const
 {
   vector<DomString> result;

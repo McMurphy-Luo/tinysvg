@@ -42,9 +42,7 @@ namespace { // unamed namespace for this file static staff
     }
     
     DomString viewBox = DomString(target->Attribute(u8"viewBox"));
-    vector<DomString> viewBox_number_separated = viewBox.Split(",");
-
-    
+    vector<DomString> viewBox_number_separated = viewBox.Split(" ");
 
     for (const DomString& item : viewBox_number_separated) {
       StringToDouble(item);
