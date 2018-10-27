@@ -10,7 +10,8 @@ NAMESPACE_BEGIN
 class SVGPolyline {
 public:
     SVGPolyline(const std::vector<SvgPoint>& points)
-    : points_(points) {
+    : points_(points)
+    {
 
     }
 

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cctype>
 
 #ifdef TINYSVG_WIN32
 #include <Windows.h>
@@ -10,8 +11,10 @@
 using std::size_t;
 using std::transform;
 using std::function;
+using std::ostream;
 using std::wstring;
 using std::vector;
+using std::isspace;
 
 NAMESPACE_BEGIN
 
@@ -45,7 +48,7 @@ wstring Utf8StringToWideString(const Utf8String& source)
 #endif
 }
 
-std::ostream& operator<<(std::ostream& target, const DomString& value)
+ostream& operator<<(ostream& target, const DomString& value)
 {
   return target << value.data_;
 }
@@ -92,17 +95,25 @@ int DomString::CharAt(size_t index) const
 
 DomString DomString::Trim() const
 {
-  return DomString();
+  return TrimLeft().TrimRight();
 }
 
 DomString DomString::TrimLeft() const
 {
-  return DomString();
+  const char* c_string = Data();
+  const char* c_string_end = Data() + ByteCount();
+  for (; c_string < c_string_end && isspace(*c_string); ++c_string)
+    ;
+  return DomString(c_string, c_string_end - c_string);
 }
 
 DomString DomString::TrimRight() const
 {
-  return DomString();
+  const char* c_string = Data();
+  const char* c_string_end = Data() + ByteCount() - 1;
+  for (; c_string_end >= c_string && isspace(*c_string_end); --c_string_end)
+    ;
+  return DomString(c_string, c_string_end - c_string + 1);
 }
 
 vector<DomString> DomString::Split(const DomString& splitter) const
