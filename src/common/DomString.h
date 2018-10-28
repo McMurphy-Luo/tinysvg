@@ -116,6 +116,8 @@ public:
 
   char ByteAt(std::size_t index) const { return data_.at(index); }
 
+  bool IsEmpty() const { return data_.empty(); }
+
   const char* Data() const { return data_.c_str(); }
 
   void Clear() { data_.clear(); }

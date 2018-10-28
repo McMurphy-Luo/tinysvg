@@ -21,32 +21,39 @@ namespace
     explicit NumericListParser(const DomString& source)
     : source_(source)
     , result_()
-    , succeeded_(false)
+    , succeeded_(true)
     , look_forward_(source.Data())
+    , c_string_end_(c_string_end_ + source.ByteCount())
     , current_numeric_begin_(look_forward_)
-    , current_numeric_end_(look_forward_)
     {
       
     }
 
-    pair<bool, vector<SvgLength>> GetResult();
+    pair<bool, vector<SvgLength>> GetResult() {
+      Consume();
+      return make_pair(succeeded_, result_);
+    }
 
   private:
-    bool CheckAndPushSingleUnit(const DomString& suppose_to_be_numeric);
     void ConsumeWhiteSpaceAndComma();
-    void ConsumeNumber();
+    DomString ConsumeNumber();
+    void CheckAndPushSingleUnit(const DomString& suppose_to_be_numeric);
+    void Consume();
 
   private:
     const DomString& source_;
     vector<SvgLength> result_;
     bool succeeded_;
     const char* look_forward_;
+    const char* c_string_end_;
     const char* current_numeric_begin_;
-    const char* current_numeric_end_;
   };
 
   void NumericListParser::ConsumeWhiteSpaceAndComma()
   {
+    if (look_forward_ == c_string_end_) {
+      return;
+    }
     if (isspace(*look_forward_)) {
       ++look_forward_;
       ConsumeWhiteSpaceAndComma();
@@ -55,65 +62,48 @@ namespace
       ++look_forward_;
       ConsumeWhiteSpaceAndComma();
     }
-    else {
-      current_numeric_begin_ = look_forward_;
-      current_numeric_end_ = look_forward_;
-    }
   }
 
-  bool NumericListParser::CheckAndPushSingleUnit(const DomString& suppose_to_be_numeric)
+  void NumericListParser::CheckAndPushSingleUnit(const DomString& suppose_to_be_numeric)
   {
     pair<bool, double> result = StringToDouble(suppose_to_be_numeric);
     if (!result.first) {
       succeeded_ = false;
-      return false;
+      return;
     }
     result_.push_back(result.second);
-    return true;
   }
 
-  void NumericListParser::ConsumeNumber()
+  DomString NumericListParser::ConsumeNumber()
   {
-    if (isspace(*look_forward_) || *look_forward_ == u8',') {
-      if (!CheckAndPushSingleUnit(DomString(current_numeric_begin, current_numeric_end - current_numeric_begin + 1))) {
-        return make_pair(false, vector<SvgLength>());
-      }
-      is_during_a_numeric = false;
+    if (look_forward_ == c_string_end_) {
+      return DomString();
     }
-    else {
-      current_numeric_end = look_forward;
+    assert(!isspace(*look_forward_) && *look_forward_ != u8',');
+    current_numeric_begin_ = look_forward_;
+    while (!isspace(*look_forward_) && *look_forward_ != u8',') {
+      ++look_forward_;
     }
+    return DomString(current_numeric_begin_, look_forward_ - current_numeric_begin_);
   }
 
-  pair<bool, vector<SvgLength>> NumericListParser::GetResult()
+  void NumericListParser::Consume()
   {
-    vector<DomString> numeric_string;
-
-    const char* look_forward = source_.Data();
-    const char* current_numeric_begin = look_forward;
-    const char* current_numeric_end = look_forward;
-    bool is_during_a_numeric = false;
-    for (; look_forward < source_.Data() + source_.ByteCount(); ++look_forward) {
-      if (is_during_a_numeric) {
-        
-      }
-      else {
-        
-      }
+    if (look_forward_ == c_string_end_ || !succeeded_) {
+      return;
     }
-
-    if (is_during_a_numeric) {
-      CheckAndPushSingleUnit(DomString(current_numeric_begin, current_numeric_end - current_numeric_begin + 1));
+    ConsumeWhiteSpaceAndComma();
+    DomString number_string_represent = ConsumeNumber();
+    if (!number_string_represent.IsEmpty()) {
+      CheckAndPushSingleUnit(number_string_represent);
     }
-
-    return result_;
+    Consume();
   }
 }
 
 pair<bool, vector<SvgLength>> ParseNumericList(const DomString& source)
 {
-  
-
+  return NumericListParser(source).GetResult();
 }
 
 NAMESPACE_END
