@@ -7,6 +7,7 @@
 #include "../svg/SvgRect.h"
 #include "../svg/SvgLine.h"
 #include "../common/Convert.h"
+#include "./MiscParser.h"
 
 using std::size_t;
 using std::pair;
@@ -40,19 +41,30 @@ namespace { // unamed namespace for this file static staff
     if (nodeName != DomString(u8"svg")) {
       return make_pair(false, SvgSvg());
     }
-    
+    SvgSvg result;
     DomString viewBox = DomString(target->Attribute(u8"viewBox"));
-    vector<DomString> viewBox_number_separated = viewBox.Split(" ");
-
-    for (const DomString& item : viewBox_number_separated) {
-      StringToDouble(item);
+    pair<bool, vector<SvgLength>> viewBox_parsed = ParseNumericList(viewBox);
+    if (viewBox_parsed.first) {
+      if (viewBox_parsed.second.size() > 0) {
+        result.SetX(viewBox_parsed.second[0]);
+      }
+      if (viewBox_parsed.second.size() > 1) {
+        result.SetY(viewBox_parsed.second[1]);
+      }
+      if (viewBox_parsed.second.size() > 2) {
+        result.SetWidth(viewBox_parsed.second[2]);
+      }
+      if (viewBox_parsed.second.size() > 3) {
+        result.SetHeight(viewBox_parsed.second[3]);
+      }
     }
-
     if (target->NoChildren()) {
-      return make_pair(true, SvgSvg());
+      return make_pair(true, result);
     }
 
-    return { false, SvgSvg() };
+    
+
+    return { true, result };
   }
 } // end unamed namespace
 
