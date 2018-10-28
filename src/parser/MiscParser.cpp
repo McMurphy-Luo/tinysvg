@@ -15,33 +15,41 @@ NAMESPACE_BEGIN
 
 namespace
 {
+
+  /**
+   * @author McMurphy.Luo
+   * @date Oct/28/2018
+   * parse a list of double defined as EBNF grammar:
+   * list-of-Ts ::= T | T, list-of-Ts
+   */
   class NumericListParser
   {
   public:
     explicit NumericListParser(const DomString& source)
-    : source_(source)
-    , result_()
+    : result_()
     , succeeded_(true)
     , look_forward_(source.Data())
-    , c_string_end_(c_string_end_ + source.ByteCount())
+    , c_string_end_(source.Data() + source.ByteCount())
     , current_numeric_begin_(look_forward_)
     {
       
     }
 
-    pair<bool, vector<SvgLength>> GetResult() {
+    pair<bool, vector<SvgLength>> GetResult()
+    {
       Consume();
       return make_pair(succeeded_, result_);
     }
 
   private:
-    void ConsumeWhiteSpaceAndComma();
-    DomString ConsumeNumber();
-    void CheckAndPushSingleUnit(const DomString& suppose_to_be_numeric);
     void Consume();
+    void ConsumeWhiteSpace();
+    void ConsumeNumberList();
+    void ConsumeNumber();
+    void ConsumeComma();
+    void ConsumeOptionalNumberList();
 
   private:
-    const DomString& source_;
     vector<SvgLength> result_;
     bool succeeded_;
     const char* look_forward_;
@@ -49,55 +57,71 @@ namespace
     const char* current_numeric_begin_;
   };
 
-  void NumericListParser::ConsumeWhiteSpaceAndComma()
+  void NumericListParser::ConsumeWhiteSpace()
   {
-    if (look_forward_ == c_string_end_) {
-      return;
-    }
-    if (isspace(*look_forward_)) {
+    while(
+      look_forward_ < c_string_end_
+      &&
+      isspace(*look_forward_)
+    ) {
       ++look_forward_;
-      ConsumeWhiteSpaceAndComma();
-    }
-    else if (*look_forward_ == u8',') {
-      ++look_forward_;
-      ConsumeWhiteSpaceAndComma();
     }
   }
 
-  void NumericListParser::CheckAndPushSingleUnit(const DomString& suppose_to_be_numeric)
+  void NumericListParser::ConsumeOptionalNumberList()
   {
-    pair<bool, double> result = StringToDouble(suppose_to_be_numeric);
-    if (!result.first) {
+    ConsumeWhiteSpace();
+    if (look_forward_ == c_string_end_) {
+      return;
+    }
+    if (look_forward_ < c_string_end_ && *look_forward_ == ',') {
+      ConsumeComma();
+      ConsumeWhiteSpace();
+    }
+    ConsumeNumberList();
+  }
+
+  void NumericListParser::ConsumeComma()
+  {
+    assert(look_forward_ < c_string_end_ && *look_forward_ == u8',');
+    if (look_forward_ < c_string_end_ && *look_forward_ == u8',') {
+      ++look_forward_;
+    }
+  }
+
+  void NumericListParser::ConsumeNumber()
+  {
+    current_numeric_begin_ = look_forward_;
+    while (
+      look_forward_ < c_string_end_
+      &&
+      !isspace(*look_forward_) && *look_forward_ != u8','
+    ) {
+      ++look_forward_;
+    }
+
+    pair<bool, double> may_be_double = StringToDouble(DomString(current_numeric_begin_, look_forward_ - current_numeric_begin_));
+    if (!may_be_double.first) {
       succeeded_ = false;
       return;
     }
-    result_.push_back(result.second);
+    result_.push_back(may_be_double.second);
+    return;
   }
 
-  DomString NumericListParser::ConsumeNumber()
+  void NumericListParser::ConsumeNumberList()
   {
-    if (look_forward_ == c_string_end_) {
-      return DomString();
+    ConsumeNumber();
+    if (!succeeded_) {
+      return;
     }
-    assert(!isspace(*look_forward_) && *look_forward_ != u8',');
-    current_numeric_begin_ = look_forward_;
-    while (!isspace(*look_forward_) && *look_forward_ != u8',') {
-      ++look_forward_;
-    }
-    return DomString(current_numeric_begin_, look_forward_ - current_numeric_begin_);
+    ConsumeOptionalNumberList();
   }
 
   void NumericListParser::Consume()
   {
-    if (look_forward_ == c_string_end_ || !succeeded_) {
-      return;
-    }
-    ConsumeWhiteSpaceAndComma();
-    DomString number_string_represent = ConsumeNumber();
-    if (!number_string_represent.IsEmpty()) {
-      CheckAndPushSingleUnit(number_string_represent);
-    }
-    Consume();
+    ConsumeWhiteSpace();
+    ConsumeNumberList();
   }
 }
 

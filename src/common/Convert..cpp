@@ -17,7 +17,7 @@ pair<bool, int> StringToInt(const DomString& value)
   int previous_error = errno;
   char* string_end = 0;
   errno = 0;
-  bool succeeded = false;
+  bool succeeded = true;
   long result = strtol(value.Data(), &string_end, 10);
 
   if (string_end == value.Data()) {
@@ -42,10 +42,8 @@ pair<bool, double> StringToDouble(const DomString& value)
   int previous_error = errno;
   char* string_end = 0;
   errno = 0;
-  bool succeeded = false;
+  bool succeeded = true;
   double result = strtod(value.Data(), &string_end);
-
-  std::stod("fucker");
 
   if (string_end == value.Data()) {
     succeeded = false;

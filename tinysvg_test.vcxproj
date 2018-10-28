@@ -11,14 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test\common\ConvertTest.cpp" />
     <ClCompile Include="test\common\DomStringTest.cpp" />
+    <ClCompile Include="test\parser\MiscParserTest.cpp" />
     <ClCompile Include="third_party\googletest\googletest\src\gtest-all.cc" />
     <ClCompile Include="third_party\googletest\googletest\src\gtest_main.cc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="test\common\ConvertTest.h" />
-    <ClInclude Include="test\common\DomStringTest.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

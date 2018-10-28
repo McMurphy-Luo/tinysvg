@@ -1,7 +1,7 @@
 #include "./SvgDocumentParser.h"
 
 #include <cassert>
-#include <tinyxml2/tinyxml2.h>
+#include "tinyxml2/tinyxml2.h"
 
 #include "../common/DomString.h"
 #include "../svg/SvgRect.h"
