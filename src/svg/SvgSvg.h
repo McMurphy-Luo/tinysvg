@@ -4,6 +4,7 @@
 #include "../Config.h"
 #include <vector>
 #include <memory>
+#include <optional>
 #include "./SvgBase.h"
 
 NAMESPACE_BEGIN
@@ -11,7 +12,13 @@ NAMESPACE_BEGIN
 class SvgSvg : public SvgBase {
 public:
   SvgSvg()
-  : SvgBase(SvgType::SvgSvg), children_() {
+  : SvgBase(SvgType::SvgSvg)
+  , children_()
+  , x_(0)
+  , y_(0)
+  , width_(0)
+  , height_(0)
+  {
 
   }
 
