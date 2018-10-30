@@ -38,19 +38,35 @@ public:
     }
   }
 
+  optional(const T& value)
+  {
+    value_ = std::make_unique<T>(value);
+  }
+
   optional& operator=(const optional<T>& another)
   {
     if (this == &another) {
       return *this;
     }
-    if (another.has_value()) {
+    if (!another.has_value()) {
+      value_.reset();
+    }
+    else if (another.has_value() && has_value()) {
+      *value_ = *(another.value_);
+    }
+    else {
       value_ = std::make_unique<T>(*(another.value_));
     }
   }
 
-  optional(const T& value)
+  optional& operator=(const T& another)
   {
-    value_ = std::make_unique<T>(value);
+    if (has_value()) {
+      *value_ = another;
+    }
+    else {
+      value_ = std::make_unique<T>(*(another.value_));
+    }
   }
 
   operator bool() const

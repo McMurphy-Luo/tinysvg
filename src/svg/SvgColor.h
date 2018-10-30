@@ -32,7 +32,8 @@ public:
         // do nothing
     }
 
-    SVGColor() : SVGColor(Transparent()) {
+    SVGColor() : SVGColor(Transparent())
+    {
         // do nothing
     }
 

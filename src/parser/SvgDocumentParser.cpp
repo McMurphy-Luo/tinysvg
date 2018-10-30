@@ -44,26 +44,26 @@ namespace { // unamed namespace for this file static staff
     SvgSvg result;
     DomString viewBox = DomString(target->Attribute(u8"viewBox"));
     pair<bool, vector<SvgLength>> viewBox_parsed = ParseNumericList(viewBox);
+
     if (viewBox_parsed.first) {
+      SvgSvg::SvgViewBox viewbox;
       if (viewBox_parsed.second.size() > 0) {
-        result.SetX(viewBox_parsed.second[0]);
+        viewbox.x = viewBox_parsed.second[0];
       }
       if (viewBox_parsed.second.size() > 1) {
-        result.SetY(viewBox_parsed.second[1]);
+        viewbox.y = viewBox_parsed.second[1];
       }
       if (viewBox_parsed.second.size() > 2) {
-        result.SetWidth(viewBox_parsed.second[2]);
+        viewbox.width = viewBox_parsed.second[2];
       }
       if (viewBox_parsed.second.size() > 3) {
-        result.SetHeight(viewBox_parsed.second[3]);
+        viewbox.height = viewBox_parsed.second[3];
       }
+      result.SetViewBox(viewbox);
     }
     if (target->NoChildren()) {
       return make_pair(true, result);
     }
-
-    
-
     return { true, result };
   }
 } // end unamed namespace

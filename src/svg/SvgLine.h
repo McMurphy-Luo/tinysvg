@@ -2,14 +2,16 @@
 #define TINYSVG_SVGLINE_H_
 
 #include "../Config.h"
-#include "./SVGBase.h"
+#include "./SvgBase.h"
+#include "./SvgColor.h"
 
 NAMESPACE_BEGIN
 
 class SvgLine : public SvgBase {
 public:
   SvgLine(SvgLength x1, SvgLength x2, SvgLength y1, SvgLength y2)
-  : SvgBase(SvgType::SvgLine){
+  : SvgBase(SvgType::SvgLine)
+  {
 
   }
 
@@ -35,11 +37,16 @@ public:
 
   void SetY2(const SvgLength value) { y2_ = value; }
 
+  SvgLength BorderWidth() const { return border_width_; }
+
+  void SetBorderWidth(SvgLength value) { border_width_ = value; }
+
 private:
   SvgLength x1_;
   SvgLength x2_;
   SvgLength y1_;
   SvgLength y2_;
+  SvgLength border_width_;
 };
 
 NAMESPACE_END
