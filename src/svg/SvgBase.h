@@ -4,9 +4,34 @@
 #include "../Config.h"
 #include <cmath>
 
+#ifdef __cpp_lib_optional
+#include <optional>
+#endif // __cpp_lib_optional
+
 NAMESPACE_BEGIN
 
 typedef double_t SvgLength;
+
+#ifdef __cpp_lib_optional
+
+using std::optional optional;
+
+#else // __cpp_lib_optional
+
+template<typename T>
+class optional {
+
+  bool operator bool() const noexcept
+  {
+
+  }
+
+  bool has_value() const noexcept {
+
+  }
+};
+
+#endif
 
 enum class SvgType {
   SvgSvg,
