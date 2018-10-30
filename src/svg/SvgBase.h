@@ -14,7 +14,7 @@ typedef double_t SvgLength;
 
 #ifdef __cpp_lib_optional
 
-using std::optional optional;
+using std::optional;
 
 #else // __cpp_lib_optional
 
