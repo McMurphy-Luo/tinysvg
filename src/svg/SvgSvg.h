@@ -11,13 +11,22 @@ NAMESPACE_BEGIN
 
 class SvgSvg : public SvgBase {
 public:
+  struct SvgViewBox {
+    optional<SvgLength> x;
+    optional<SvgLength> y;
+    optional<SvgLength> width;
+    optional<SvgLength> height;
+  };
+
+public:
   SvgSvg()
   : SvgBase(SvgType::SvgSvg)
   , children_()
   , x_(0)
   , y_(0)
-  , width_(0)
-  , height_(0)
+  , width_()
+  , height_()
+  , view_box_()
   {
 
   }
@@ -30,13 +39,17 @@ public:
 
   void SetY(SvgLength value) { y_ = value; }
 
-  SvgLength Width() const { return width_; }
+  optional<SvgLength> Width() const { return width_; }
 
-  void SetWidth(SvgLength value) { width_ = value; }
+  void SetWidth(const optional<SvgLength>& value) { width_ = value; }
 
-  SvgLength Height() const { return height_; }
+  optional<SvgLength> Height() const { return height_; }
 
-  void SetHeight(SvgLength value) { height_ = value; }
+  void SetHeight(const optional<SvgLength>& value) { height_ = value; }
+
+  optional<SvgViewBox> ViewBox() const { return view_box_; }
+
+  void SetViewBox(const optional<SvgViewBox>& value) { view_box_ = value; }
 
   void AddChild(const std::shared_ptr<SvgBase>& target);
 
@@ -46,8 +59,9 @@ private:
   std::vector<std::shared_ptr<SvgBase>> children_;
   SvgLength x_;
   SvgLength y_;
-  SvgLength width_;
-  SvgLength height_;
+  optional<SvgLength> width_;
+  optional<SvgLength> height_;
+  optional<SvgViewBox> view_box_;
 };
 
 NAMESPACE_END

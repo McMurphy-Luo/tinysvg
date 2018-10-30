@@ -6,7 +6,10 @@
 
 #ifdef __cpp_lib_optional
 #include <optional>
-#endif // __cpp_lib_optional
+#else
+#include <cassert>
+#include <memory>
+#endif// __cpp_lib_optional
 
 NAMESPACE_BEGIN
 
@@ -20,15 +23,59 @@ using std::optional;
 
 template<typename T>
 class optional {
-
-  bool operator bool() const noexcept
+public:
+  optional()
+  : value_(nullptr)
   {
 
   }
 
-  bool has_value() const noexcept {
-
+  optional(const optional<T>& another)
+  : value_(nullptr)
+  {
+    if (another.has_value()) {
+      value_ = std::make_unique<T>(*(another.value_));
+    }
   }
+
+  optional& operator=(const optional<T>& another)
+  {
+    if (this == &another) {
+      return *this;
+    }
+    if (another.has_value()) {
+      value_ = std::make_unique<T>(*(another.value_));
+    }
+  }
+
+  optional(const T& value)
+  {
+    value_ = std::make_unique<T>(value);
+  }
+
+  operator bool() const
+  {
+    return has_value();
+  }
+
+  bool has_value() const
+  {
+    if (value_) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  T& value()
+  {
+    assert(value_);
+    return *value_;
+  }
+
+private:
+  std::unique_ptr<T> value_;
 };
 
 #endif
