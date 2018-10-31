@@ -6,7 +6,10 @@
 #include "../common/DomString.h"
 #include "../svg/SvgRect.h"
 #include "../svg/SvgLine.h"
-#include "../common/Convert.h"
+#include "../svg/SvgEllipse.h"
+#include "../svg/SvgPolygon.h"
+#include "../svg/SvgPolyline.h"
+#include "../svg/SvgCircle.h"
 #include "./MiscParser.h"
 
 using std::size_t;
@@ -34,6 +37,9 @@ namespace { // unamed namespace for this file static staff
     return nullptr;
   }
 
+  
+  
+
   pair<bool, SvgSvg> ParseSvgElement(XMLElement* target)
   {
     DomString nodeName(target->Name());
@@ -44,7 +50,6 @@ namespace { // unamed namespace for this file static staff
     SvgSvg result;
     DomString viewBox = DomString(target->Attribute(u8"viewBox"));
     pair<bool, vector<SvgLength>> viewBox_parsed = ParseNumericList(viewBox);
-
     if (viewBox_parsed.first) {
       SvgSvg::SvgViewBox viewbox;
       if (viewBox_parsed.second.size() > 0) {
@@ -61,8 +66,29 @@ namespace { // unamed namespace for this file static staff
       }
       result.SetViewBox(viewbox);
     }
-    if (target->NoChildren()) {
-      return make_pair(true, result);
+
+    XMLElement* child = target->FirstChildElement();
+    while (child) {
+      DomString nodeName(child->Name());
+      if (nodeName == DomString(u8"line")) {
+        ParseSVGLineElement(child);
+      }
+      else if (nodeName == DomString(u8"rect")) {
+        ParseSvgRectElement(child);
+      }
+      else if (nodeName == DomString(u8"circle")) {
+        
+      }
+      else if (nodeName == DomString(u8"ellipse")) {
+        
+      }
+      else if (nodeName == DomString(u8"polygon")) {
+
+      }
+      else if (nodeName == DomString(u8"polyline")) {
+
+      }
+      child = child->NextSiblingElement();
     }
     return { true, result };
   }
