@@ -27,18 +27,76 @@ NAMESPACE_BEGIN
 namespace { // unamed namespace for this file static staff
   shared_ptr<SvgRect> ParseSvgRectElement(XMLElement* element)
   {
-    return nullptr;
+    DomString element_name(element->Name());
+    assert(element_name == u8"rect");
+    SvgRect the_rectangle;
+    pair<bool, SvgLength> attribute_parse_result = ParseNumeric(element->Attribute(u8"x"));
+    if (attribute_parse_result.first) {
+      the_rectangle.SetX(attribute_parse_result.second);
+    }
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"y"));
+    if (attribute_parse_result.first) {
+      the_rectangle.SetY(attribute_parse_result.second);
+    }
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"rx"));
+    if (attribute_parse_result.first) {
+      the_rectangle.SetRX(attribute_parse_result.second);
+    }
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"ry"));
+    if (attribute_parse_result.first) {
+      the_rectangle.SetY(attribute_parse_result.second);
+    }
+    return std::make_shared<SvgRect>(the_rectangle);
   }
 
   shared_ptr<SvgLine> ParseSVGLineElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"line");
+    SvgLine the_line;
+    pair<bool, SvgLength> position_parse_result = ParseNumeric(element->Attribute(u8"x1"));
+    if (position_parse_result.first) {
+      the_line.SetX1(position_parse_result.second);
+    }
+    position_parse_result = ParseNumeric(element->Attribute(u8"x2"));
+    if (position_parse_result.first) {
+      the_line.SetX2(position_parse_result.second);
+    }
+    position_parse_result = ParseNumeric(element->Attribute(u8"y1"));
+    if (position_parse_result.first) {
+      the_line.SetY1(position_parse_result.second);
+    }
+    position_parse_result = ParseNumeric(element->Attribute(u8"y2"));
+    if (position_parse_result.first) {
+      the_line.SetY2(position_parse_result.second);
+    }
+    return std::make_shared<SvgLine>(the_line);
+  }
+
+  shared_ptr<SvgCircle> ParseSvgCircleElement(XMLElement* element)
+  {
+    DomString element_name(element->Name());
+    assert(element_name == u8"circle");
+    SvgCircle the_circle;
+    pair<bool, SvgLength> attribute_parse_result = ParseNumeric(element->Attribute(u8""));
+
     return nullptr;
   }
 
-  
-  
+  shared_ptr<SvgEllipse> ParseSvgEllipseElement(XMLElement* element)
+  {
+
+  }
+
+  shared_ptr<SVGPolyline> ParseSvgPolylineElement(XMLElement* element)
+  {
+
+  }
+
+  shared_ptr<SvgPolygon> ParseSvgPolygonElement(XMLElement* element)
+  {
+
+  }
 
   pair<bool, SvgSvg> ParseSvgElement(XMLElement* target)
   {

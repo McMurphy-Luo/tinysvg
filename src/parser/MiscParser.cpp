@@ -130,4 +130,9 @@ pair<bool, vector<SvgLength>> ParseNumericList(const DomString& source)
   return NumericListParser(source).GetResult();
 }
 
+pair<bool, SvgLength> ParseNumeric(const DomString& source)
+{
+  return StringToDouble(source);
+}
+
 NAMESPACE_END

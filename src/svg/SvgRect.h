@@ -6,22 +6,23 @@
 
 NAMESPACE_BEGIN
 
-class SvgRect : public SvgBase {
+class SvgRect : public SvgBase
+{
 public:
   SvgRect(SvgLength x, SvgLength y, SvgLength width, SvgLength height, SvgLength rx, SvgLength ry)
-    :SvgBase(SvgType::SvgRectangle),
-    x_(x),
-    y_(y),
-    width_(width),
-    height_(height),
-    rx_(rx),
-    ry_(ry)
+  : SvgBase(SvgType::SvgRectangle)
+  , x_(x)
+  , y_(y)
+  , width_(width)
+  , height_(height)
+  , rx_(rx)
+  , ry_(ry)
   {
 
   }
 
   SvgRect()
-    : SvgRect(0, 0, 0, 0, 0, 0)
+  : SvgRect(0, 0, 0, 0, 0, 0)
   {
 
   }
