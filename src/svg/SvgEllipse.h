@@ -24,6 +24,14 @@ public:
 
   SvgLength CY() const { return cy_; }
 
+  void SetRX(SvgLength value) { rx_ = value; }
+
+  SvgLength RX() const { return rx_; }
+
+  void SetRY(SvgLength value) { ry_ = value; }
+
+  SvgLength RY() const { return ry_; }
+
 private:
   SvgLength cx_;
   SvgLength cy_;

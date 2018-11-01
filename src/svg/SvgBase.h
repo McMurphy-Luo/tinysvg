@@ -57,6 +57,7 @@ public:
     else {
       value_ = std::make_unique<T>(*(another.value_));
     }
+    return *this;
   }
 
   optional& operator=(const T& another)
@@ -65,8 +66,9 @@ public:
       *value_ = another;
     }
     else {
-      value_ = std::make_unique<T>(*(another.value_));
+      value_ = std::make_unique<T>(another);
     }
+    return *this;
   }
 
   operator bool() const
@@ -114,7 +116,13 @@ struct SvgPoint {
 
 class SvgBase {
 public:
-  SvgBase(SvgType type) {
+  SvgBase(SvgType type)
+  {
+
+  }
+
+  virtual ~SvgBase()
+  {
 
   }
 

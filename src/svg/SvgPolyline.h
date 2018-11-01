@@ -7,18 +7,27 @@
 
 NAMESPACE_BEGIN
 
-class SVGPolyline {
+class SvgPolyline
+  : public SvgBase
+{
 public:
-    SVGPolyline(const std::vector<SvgPoint>& points)
-    : points_(points)
-    {
+  SvgPolyline(const std::vector<SvgPoint>& points)
+    : SvgBase(SvgType::SvgPolyline)
+    , points_(points)
+  {
 
-    }
+  }
 
-    std::vector<SvgPoint> Points() { return points_; }
+  SvgPolyline()
+  : SvgPolyline(std::vector<SvgPoint>())
+  {
+
+  }
+
+  std::vector<SvgPoint> Points() { return points_; }
 
 private:
-    std::vector<SvgPoint> points_;
+  std::vector<SvgPoint> points_;
 };
 
 NAMESPACE_END
