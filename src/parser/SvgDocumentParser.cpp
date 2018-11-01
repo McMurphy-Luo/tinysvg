@@ -78,14 +78,36 @@ namespace { // unamed namespace for this file static staff
     DomString element_name(element->Name());
     assert(element_name == u8"circle");
     SvgCircle the_circle;
-    pair<bool, SvgLength> attribute_parse_result = ParseNumeric(element->Attribute(u8""));
-
-    return nullptr;
+    pair<bool, SvgLength> attribute_parse_result = ParseNumeric(element->Attribute(u8"cx"));
+    if (attribute_parse_result.first) {
+      the_circle.SetCX(attribute_parse_result.second);
+    }
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"cy"));
+    if (attribute_parse_result.first) {
+      the_circle.SetCY(attribute_parse_result.second);
+    }
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"r"));
+    if (attribute_parse_result.first) {
+      the_circle.SetR(attribute_parse_result.second);
+    }
+    return std::make_shared<SvgCircle>(the_circle);
   }
 
   shared_ptr<SvgEllipse> ParseSvgEllipseElement(XMLElement* element)
   {
-
+    DomString element_name(element->Name());
+    assert(element_name == u8"ellipse");
+    SvgEllipse the_ellipse;
+    pair<bool, SvgLength> attribute_parse_result = ParseNumeric(element->Attribute(u8"cx"));
+    if (attribute_parse_result.first) {
+      the_ellipse.SetCX(attribute_parse_result.second);
+    }
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"cy"));
+    if (attribute_parse_result.first) {
+      the_ellipse.SetCY(attribute_parse_result.second);
+    }
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"rx"));
+    attribute_parse_result = ParseNumeric(element->Attribute(u8"ry"));
   }
 
   shared_ptr<SVGPolyline> ParseSvgPolylineElement(XMLElement* element)
