@@ -51,12 +51,7 @@ public:
 
   void SetViewBox(const optional<SvgViewBox>& value) { view_box_ = value; }
 
-  void AddChild(const std::shared_ptr<SvgBase>& target);
-
-  void RemoveChild(const std::shared_ptr<SvgBase>& child);
-
 private:
-  std::vector<std::shared_ptr<SvgBase>> children_;
   SvgLength x_;
   SvgLength y_;
   optional<SvgLength> width_;

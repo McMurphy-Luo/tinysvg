@@ -3,6 +3,7 @@
 
 #include "../Config.h"
 #include <cmath>
+#include <vector>
 
 #ifdef __cpp_lib_optional
 #include <optional>
@@ -22,7 +23,8 @@ using std::optional;
 #else // __cpp_lib_optional
 
 template<typename T>
-class optional {
+class optional
+{
 public:
   optional()
   : value_(nullptr)
@@ -98,7 +100,8 @@ private:
 
 #endif
 
-enum class SvgType {
+enum class SvgType
+{
   SvgSvg,
   SvgRectangle,
   SvgLine,
@@ -109,14 +112,19 @@ enum class SvgType {
   SvgPolyline
 };
 
-struct SvgPoint {
+struct SvgPoint
+{
   SvgLength x;
   SvgLength y;
 };
 
-class SvgBase {
+class SvgBase
+{
 public:
   SvgBase(SvgType type)
+  : type_(type)
+  , children_()
+  , parent_()
   {
 
   }
@@ -126,10 +134,16 @@ public:
 
   }
 
+  void AddChild(std::shared_ptr<SvgBase>& target);
+
+  void RemoveChild(std::shared_ptr<SvgBase>& child);
+
   SvgType Type() const { return type_; }
 
 private:
   SvgType type_;
+  std::vector<std::shared_ptr<SvgBase>> children_;
+  std::weak_ptr<SvgBase> parent_;
 };
 
 NAMESPACE_END
