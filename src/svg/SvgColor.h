@@ -21,14 +21,12 @@ public:
         red_(red),
         green_(green),
         blue_(blue),
-        alpha_(alpha)
-    {
+        alpha_(alpha) {
         // do nothing
     }
 
     SVGColor(std::uint_fast8_t red, std::uint_fast8_t green, std::uint_fast8_t blue) :
-        SVGColor(red, green, blue, 100)
-    {
+        SVGColor(red, green, blue, 100) {
         // do nothing
     }
 

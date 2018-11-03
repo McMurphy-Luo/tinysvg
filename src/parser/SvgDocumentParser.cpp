@@ -20,6 +20,7 @@ using std::vector;
 using std::dynamic_pointer_cast;
 using std::make_shared;
 using tinyxml2::XMLDocument;
+using tinyxml2::XMLError;
 using tinyxml2::XML_SUCCESS;
 using tinyxml2::XMLElement;
 using tinyxml2::XMLNode;
@@ -31,71 +32,93 @@ namespace { // unamed namespace for this file static staff
   class SvgDocumentParser
   {
   public:
-    explicit SvgDocumentParser(XMLDocument* document);
+    explicit SvgDocumentParser(const char* buffer, size_t buffer_size);
 
-    shared_ptr<SvgSvg> Parse();
-
-  private:
-    shared_ptr<SvgBase> ParseElement(XMLElement* element);
-
-    shared_ptr<SvgSvg> ParseSvgElement(XMLElement* element);
-
-    shared_ptr<SvgLine> ParseSvgLineElement(XMLElement* element);
-
-    shared_ptr<SvgRect> ParseSvgRectElement(XMLElement* element);
-
-    shared_ptr<SvgCircle> ParseSvgCircleElement(XMLElement* element);
-
-    shared_ptr<SvgEllipse> ParseSvgEllipseElement(XMLElement* element);
-
-    shared_ptr<SvgPolygon> ParseSvgPolygonElement(XMLElement* element);
-
-    shared_ptr<SvgPolyline> ParseSvgPolylineElement(XMLElement* element);
+    optional<NodeDelegate<SvgSvg>> Parse();
 
   private:
-    XMLDocument* document_;
+    void ConstructNode(XMLElement* element);
+
+    optional<SvgSvg> ParseSvgElement(XMLElement* element);
+
+    optional<SvgLine> ParseSvgLineElement(XMLElement* element);
+
+    optional<SvgRect> ParseSvgRectElement(XMLElement* element);
+
+    optional<SvgCircle> ParseSvgCircleElement(XMLElement* element);
+
+    optional<SvgEllipse> ParseSvgEllipseElement(XMLElement* element);
+
+    optional<SvgPolygon> ParseSvgPolygonElement(XMLElement* element);
+
+    optional<SvgPolyline> ParseSvgPolylineElement(XMLElement* element);
+
+  private:
+    XMLDocument document_;
+    XMLError error_;
+    NodeDelegateBase current_node_;
   };
 
-  SvgDocumentParser::SvgDocumentParser(XMLDocument* document)
-  : document_(document)
+  SvgDocumentParser::SvgDocumentParser(const char* buffer, size_t buffer_size)
+    : document_()
+    , error_(XML_SUCCESS)
+    , current_node_(EmptyNode())
   {
-
+    error_ = document_.Parse(buffer, buffer_size);
   }
 
-  shared_ptr<SvgSvg> SvgDocumentParser::Parse()
-  {
-    return dynamic_pointer_cast<SvgSvg>(ParseElement(document_->RootElement()));
+  optional<NodeDelegate<SvgSvg>> SvgDocumentParser::Parse() {
+    return nullptr;
   }
-  
-  shared_ptr<SvgBase> SvgDocumentParser::ParseElement(XMLElement* element)
-  {
-    shared_ptr<SvgBase> graphics;
+
+  void SvgDocumentParser::ConstructNode(XMLElement* element) {
     DomString nodeName(element->Name());
+    NodeDelegateBase next_delegate = EmptyNode();
     if (nodeName == DomString(u8"svg")) {
-      graphics = ParseSvgElement(element);
+      optional<SvgSvg> svg_svg = ParseSvgElement(element);
+      if (svg_svg) {
+        next_delegate = current_node_.AddChild(svg_svg.value());
+      }
     }
-    if (nodeName == DomString(u8"line")) {
-      graphics = ParseSvgLineElement(element);
+    else if (nodeName == DomString(u8"line")) {
+      optional<SvgLine> svg_line = ParseSvgLineElement(element);
+      if (svg_line) {
+        next_delegate = current_node_.AddChild(svg_line.value());
+      }
     }
     else if (nodeName == DomString(u8"rect")) {
-      graphics = ParseSvgRectElement(element);
+      optional<SvgRect> svg_rect = ParseSvgRectElement(element);
+      if (svg_rect) {
+        next_delegate = current_node_.AddChild(svg_rect.value());
+      }
     }
     else if (nodeName == DomString(u8"circle")) {
-      graphics = ParseSvgCircleElement(element);
+      optional<SvgCircle> svg_circle = ParseSvgCircleElement(element);
+      if (svg_circle) {
+        next_delegate = current_node_.AddChild(svg_circle.value());
+      }
     }
     else if (nodeName == DomString(u8"ellipse")) {
-      graphics = ParseSvgEllipseElement(element);
+      optional<SvgEllipse> svg_ellipse = ParseSvgEllipseElement(element);
+      if (svg_ellipse) {
+        next_delegate = current_node_.AddChild(svg_ellipse.value());
+      }
     }
     else if (nodeName == DomString(u8"polygon")) {
-      graphics = ParseSvgPolygonElement(element);
+      optional<SvgPolygon> svg_polygon = ParseSvgPolygonElement(element);
+      if (svg_polygon) {
+        next_delegate = current_node_.AddChild(svg_polygon.value());
+      }
     }
     else if (nodeName == DomString(u8"polyline")) {
-      graphics = ParseSvgPolylineElement(element);
+      optional<SvgPolyline> svg_polyline = ParseSvgPolylineElement(element);
+      if (svg_polyline) {
+        next_delegate = current_node_.AddChild(svg_polyline.value());
+      }
     }
-    return graphics;
   }
 
-  shared_ptr<SvgSvg> SvgDocumentParser::ParseSvgElement(XMLElement* element)
+  optional<SvgSvg> SvgDocumentParser::ParseSvgElement(XMLElement* element)
   {
     DomString nodeName(element->Name());
     assert(nodeName == DomString(u8"svg"));
@@ -121,10 +144,10 @@ namespace { // unamed namespace for this file static staff
       }
       result.SetViewBox(viewbox);
     }
-    return make_shared<SvgSvg>(result);
+    return result;
   }
 
-  shared_ptr<SvgLine> SvgDocumentParser::ParseSvgLineElement(XMLElement* element)
+  optional<SvgLine> SvgDocumentParser::ParseSvgLineElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"line");
@@ -145,10 +168,10 @@ namespace { // unamed namespace for this file static staff
     if (position_parse_result.first) {
       the_line.SetY2(position_parse_result.second);
     }
-    return make_shared<SvgLine>(the_line);
+    return the_line;
   }
 
-  shared_ptr<SvgRect> SvgDocumentParser::ParseSvgRectElement(XMLElement* element)
+  optional<SvgRect> SvgDocumentParser::ParseSvgRectElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"rect");
@@ -169,10 +192,10 @@ namespace { // unamed namespace for this file static staff
     if (attribute_parse_result.first) {
       the_rectangle.SetY(attribute_parse_result.second);
     }
-    return make_shared<SvgRect>(the_rectangle);
+    return the_rectangle;
   }
 
-  shared_ptr<SvgCircle> SvgDocumentParser::ParseSvgCircleElement(XMLElement* element)
+  optional<SvgCircle> SvgDocumentParser::ParseSvgCircleElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"circle");
@@ -189,10 +212,10 @@ namespace { // unamed namespace for this file static staff
     if (attribute_parse_result.first) {
       the_circle.SetR(attribute_parse_result.second);
     }
-    return make_shared<SvgCircle>(the_circle);
+    return the_circle;
   }
 
-  shared_ptr<SvgEllipse> SvgDocumentParser::ParseSvgEllipseElement(XMLElement* element)
+  optional<SvgEllipse> SvgDocumentParser::ParseSvgEllipseElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"ellipse");
@@ -213,35 +236,26 @@ namespace { // unamed namespace for this file static staff
     if (attribute_parse_result.first) {
       the_ellipse.SetRY(attribute_parse_result.second);
     }
-    return make_shared<SvgEllipse>(the_ellipse);
+    return the_ellipse;
   }
 
-  shared_ptr<SvgPolygon> SvgDocumentParser::ParseSvgPolygonElement(XMLElement* element)
+  optional<SvgPolygon> SvgDocumentParser::ParseSvgPolygonElement(XMLElement* element)
   {
     SvgPolygon the_polygon;
-    return make_shared<SvgPolygon>(the_polygon);
+    return the_polygon;
   }
 
-  shared_ptr<SvgPolyline> SvgDocumentParser::ParseSvgPolylineElement(XMLElement* element)
+  optional<SvgPolyline> SvgDocumentParser::ParseSvgPolylineElement(XMLElement* element)
   {
     SvgPolyline the_polyline;
-    return make_shared<SvgPolyline>(the_polyline);
+    return the_polyline;
   }
 
 } // end unamed namespace
 
-pair<bool, SvgSvg> Parse(const char* buffer, size_t buffer_size)
+optional<NodeDelegate<SvgSvg>> Parse(const char* buffer, size_t buffer_size)
 {
-  tinyxml2::XMLDocument document;
-  tinyxml2::XMLError error = document.Parse(buffer, buffer_size);
-  if (error != XML_SUCCESS) {
-    return make_pair(false, SvgSvg());
-  }
-  shared_ptr<SvgSvg> result = SvgDocumentParser(&document).Parse();
-  if (!result) {
-    return make_pair(false, SvgSvg());
-  }
-  return make_pair(true, *result);
+  return SvgDocumentParser(buffer, buffer_size).Parse();
 }
 
 NAMESPACE_END

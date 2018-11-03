@@ -7,12 +7,14 @@
 NAMESPACE_BEGIN
 
 class SvgEllipse
-: public SvgBase
 {
 public:
+  SvgEllipse(SvgLength cx, SvgLength cy, SvgLength rx, SvgLength ry) {
+
+  }
+
   SvgEllipse()
-  : SvgBase(SvgType::SvgEllipse)
-  {
+    : SvgEllipse(0, 0, 0, 0) {
 
   }
 

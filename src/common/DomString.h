@@ -63,39 +63,33 @@ class DomString {
 
 public:
   DomString()
-  : data_()
-  {
-
+    : data_() {
+    // do nothing
   }
 
   DomString(const Utf8String& another)
-  : data_(another)
-  {
+    : data_(another) {
     // do nothing
   }
 
   DomString(std::size_t count, char the_char)
-  : data_(count, the_char)
-  {
-
+    : data_(count, the_char) {
+    // do nothing
   }
 
   DomString(const char* raw_string)
-  : data_(raw_string)
-  {
-
+    : data_(raw_string) {
+    // do nothing
   }
 
   DomString(const char* utf8_string_raw, std::size_t buf_size)
-  : data_(utf8_string_raw, buf_size)
-  {
+    : data_(utf8_string_raw, buf_size) {
     // do nothing
   }
 
   DomString(const wchar_t* data)
-  : data_(WideStringToUtf8String(data))
-  {
-
+    : data_(WideStringToUtf8String(data)) {
+    // do nothing
   }
 
   DomString(const wchar_t* data, size_t buf_size)

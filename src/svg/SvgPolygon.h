@@ -7,11 +7,9 @@
 NAMESPACE_BEGIN
 
 class SvgPolygon
-: public SvgBase
 {
 public:
   SvgPolygon()
-    : SvgBase(SvgType::SvgPolygon)
   {
 
   }

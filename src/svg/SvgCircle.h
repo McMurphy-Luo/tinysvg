@@ -6,17 +6,21 @@
 
 NAMESPACE_BEGIN
 
-class SvgCircle:
-public SvgBase
+class SvgCircle
 {
 public:
-  SvgCircle()
-  : SvgBase(SvgType::SvgCircle)
-  , cx_(0)
-  , cy_(0)
-  , r_(0)
+  SvgCircle(SvgLength cx, SvgLength cy, SvgLength r)
+    : cx_(cx)
+    , cy_(cy)
+    , r_(r)
   {
+    // do nothing
+  }
 
+  SvgCircle()
+    : SvgCircle(0, 0, 0)
+  {
+    // do nothing
   }
 
   SvgLength CX() const { return cx_; }

@@ -8,20 +8,18 @@
 NAMESPACE_BEGIN
 
 class SvgPolyline
-  : public SvgBase
 {
 public:
   SvgPolyline(const std::vector<SvgPoint>& points)
-    : SvgBase(SvgType::SvgPolyline)
-    , points_(points)
+    : points_(points)
   {
-
+    // do nothing
   }
 
   SvgPolyline()
-  : SvgPolyline(std::vector<SvgPoint>())
+    : SvgPolyline(std::vector<SvgPoint>())
   {
-
+    // do nothing
   }
 
   std::vector<SvgPoint> Points() { return points_; }

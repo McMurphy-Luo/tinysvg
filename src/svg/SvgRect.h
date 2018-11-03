@@ -6,25 +6,24 @@
 
 NAMESPACE_BEGIN
 
-class SvgRect : public SvgBase
+class SvgRect
 {
 public:
   SvgRect(SvgLength x, SvgLength y, SvgLength width, SvgLength height, SvgLength rx, SvgLength ry)
-  : SvgBase(SvgType::SvgRectangle)
-  , x_(x)
-  , y_(y)
-  , width_(width)
-  , height_(height)
-  , rx_(rx)
-  , ry_(ry)
+    : x_(x)
+    , y_(y)
+    , width_(width)
+    , height_(height)
+    , rx_(rx)
+    , ry_(ry)
   {
-
+    // do nothing
   }
 
   SvgRect()
-  : SvgRect(0, 0, 0, 0, 0, 0)
+    : SvgRect(0, 0, 0, 0, 0, 0)
   {
-
+    // do nothing
   }
 
   SvgLength X() const { return x_; }

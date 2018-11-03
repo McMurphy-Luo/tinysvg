@@ -9,7 +9,7 @@
 
 NAMESPACE_BEGIN
 
-class SvgSvg : public SvgBase {
+class SvgSvg {
 public:
   struct SvgViewBox {
     optional<SvgLength> x;
@@ -19,16 +19,25 @@ public:
   };
 
 public:
-  SvgSvg()
-  : SvgBase(SvgType::SvgSvg)
-  , children_()
-  , x_(0)
-  , y_(0)
-  , width_()
-  , height_()
-  , view_box_()
+  SvgSvg(SvgLength x, SvgLength y, optional<SvgLength> width,
+         optional<SvgLength> height, optional<SvgViewBox> view_box)
+    : x_(x)
+    , y_(y)
+    , width_(width)
+    , height_(height)
+    , view_box_(view_box)
   {
 
+  }
+
+  SvgSvg()
+    : x_(0)
+    , y_(0)
+    , width_()
+    , height_()
+    , view_box_()
+  {
+    // do nothing
   }
 
   SvgLength X() const { return x_; }

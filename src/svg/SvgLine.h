@@ -7,18 +7,23 @@
 
 NAMESPACE_BEGIN
 
-class SvgLine : public SvgBase {
+class SvgLine
+{
 public:
-  SvgLine(SvgLength x1, SvgLength x2, SvgLength y1, SvgLength y2)
-  : SvgBase(SvgType::SvgLine)
+  SvgLine(SvgLength x1, SvgLength x2, SvgLength y1, SvgLength y2, SvgLength border_width)
+    : x1_(x1)
+    , x2_(x2)
+    , y1_(y1)
+    , y2_(y2)
+    , border_width_(border_width)
   {
-
+    // do nothing
   }
 
   SvgLine()
-  : SvgLine(0, 0, 0, 0)
+    : SvgLine(0, 0, 0, 0, 0)
   {
-
+    // do nothing
   }
 
   SvgLength X1() const { return x1_; }
