@@ -11,12 +11,23 @@ NAMESPACE_BEGIN
 
 class SvgSvg {
 public:
-  struct SvgViewBox {
+  class SvgViewBox {
+  public:
+    SvgViewBox(const SvgViewBox& another)
+    : x (another.x)
+    , y (another.y)
+    ,width(another.y)
+    ,height(another.height){
+
+    }
+    
     optional<SvgLength> x;
     optional<SvgLength> y;
     optional<SvgLength> width;
     optional<SvgLength> height;
   };
+
+  static constexpr SvgType Type = SvgType::Svg;
 
 public:
   SvgSvg(SvgLength x, SvgLength y, optional<SvgLength> width,

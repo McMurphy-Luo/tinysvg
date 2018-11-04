@@ -10,6 +10,9 @@ NAMESPACE_BEGIN
 class SvgLine
 {
 public:
+  static constexpr SvgType Type = SvgType::Line;
+
+public:
   SvgLine(SvgLength x1, SvgLength x2, SvgLength y1, SvgLength y2, SvgLength border_width)
     : x1_(x1)
     , x2_(x2)

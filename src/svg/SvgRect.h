@@ -9,6 +9,9 @@ NAMESPACE_BEGIN
 class SvgRect
 {
 public:
+  static constexpr SvgType Type = SvgType::Rect;
+
+public:
   SvgRect(SvgLength x, SvgLength y, SvgLength width, SvgLength height, SvgLength rx, SvgLength ry)
     : x_(x)
     , y_(y)

@@ -37,7 +37,15 @@ namespace { // unamed namespace for this file static staff
     optional<NodeDelegate<SvgSvg>> Parse();
 
   private:
-    optional<NodeDelegateBase> ConstructNode(XMLElement* element);
+    optional<NodeDelegateBase> ConstructNode(XMLElement* element, NodeDelegateBase* parent);
+
+    template<typename T>
+    optional<NodeDelegateBase> AddNode(optional<T> target, NodeDelegateBase* parent) {
+      if (target.has_value()) {
+        return parent->AddChild(target.value());
+      }
+      return nullptr;
+    }
 
     optional<SvgSvg> ParseSvgElement(XMLElement* element);
 
@@ -57,72 +65,49 @@ namespace { // unamed namespace for this file static staff
     XMLDocument document_;
     XMLError error_;
     NodeDelegateBase root_delegate_;
-    NodeDelegateBase parent_delegate_;
   };
 
   SvgDocumentParser::SvgDocumentParser(const char* buffer, size_t buffer_size)
     : document_()
     , error_(XML_SUCCESS)
-    , root_delegate_(EmptyNode())
-    , parent_delegate_(root_delegate_)
+    , root_delegate_(NodeDelegate<nullptr_t>())
   {
     error_ = document_.Parse(buffer, buffer_size);
   }
 
   optional<NodeDelegate<SvgSvg>> SvgDocumentParser::Parse() {
-    optional<NodeDelegateBase> result_tree = ConstructNode(document_.RootElement());
-    if (result_tree.has_value() && result_tree.value().To<SvgSvg>()) {
+    optional<NodeDelegateBase> result_tree = ConstructNode(document_.RootElement(), &root_delegate_);
+    if (result_tree.has_value() && result_tree.value().Type() == SvgType::Svg) {
       return result_tree.value().To<SvgSvg>();
     }
     return nullptr;
   }
 
-  optional<NodeDelegateBase> SvgDocumentParser::ConstructNode(XMLElement* element) {
+  optional<NodeDelegateBase> SvgDocumentParser::ConstructNode(XMLElement* element, NodeDelegateBase* parent) {
     DomString nodeName(element->Name());
-    NodeDelegateBase me_delegate = EmptyNode();
+    optional<NodeDelegateBase> me;
     if (nodeName == DomString(u8"svg")) {
-      optional<SvgSvg> svg_svg = ParseSvgElement(element);
-      if (svg_svg) {
-        me_delegate = parent_delegate_.AddChild(svg_svg.value());
-      }
+      me = AddNode(ParseSvgElement(element), parent);
     }
     else if (nodeName == DomString(u8"line")) {
-      optional<SvgLine> svg_line = ParseSvgLineElement(element);
-      if (svg_line) {
-        me_delegate = parent_delegate_.AddChild(svg_line.value());
-      }
+      me = AddNode(ParseSvgLineElement(element), parent);
     }
     else if (nodeName == DomString(u8"rect")) {
-      optional<SvgRect> svg_rect = ParseSvgRectElement(element);
-      if (svg_rect) {
-        me_delegate = parent_delegate_.AddChild(svg_rect.value());
-      }
+      me = AddNode(ParseSvgRectElement(element), parent);
     }
     else if (nodeName == DomString(u8"circle")) {
-      optional<SvgCircle> svg_circle = ParseSvgCircleElement(element);
-      if (svg_circle) {
-        me_delegate = parent_delegate_.AddChild(svg_circle.value());
-      }
+      me = AddNode(ParseSvgCircleElement(element), parent);
     }
     else if (nodeName == DomString(u8"ellipse")) {
-      optional<SvgEllipse> svg_ellipse = ParseSvgEllipseElement(element);
-      if (svg_ellipse) {
-        me_delegate = parent_delegate_.AddChild(svg_ellipse.value());
-      }
+      me = AddNode(ParseSvgEllipseElement(element), parent);
     }
     else if (nodeName == DomString(u8"polygon")) {
-      optional<SvgPolygon> svg_polygon = ParseSvgPolygonElement(element);
-      if (svg_polygon) {
-        me_delegate = parent_delegate_.AddChild(svg_polygon.value());
-      }
+      me = AddNode(ParseSvgPolygonElement(element), parent);
     }
     else if (nodeName == DomString(u8"polyline")) {
-      optional<SvgPolyline> svg_polyline = ParseSvgPolylineElement(element);
-      if (svg_polyline) {
-        me_delegate = parent_delegate_.AddChild(svg_polyline.value());
-      }
+      me = AddNode(ParseSvgPolylineElement(element), parent);
     }
-    return me_delegate;
+    return me;
   }
 
   optional<SvgSvg> SvgDocumentParser::ParseSvgElement(XMLElement* element)

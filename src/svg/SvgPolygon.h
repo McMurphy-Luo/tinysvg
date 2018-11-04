@@ -9,6 +9,9 @@ NAMESPACE_BEGIN
 class SvgPolygon
 {
 public:
+  static constexpr SvgType Type = SvgType::Polygon;
+
+public:
   SvgPolygon()
   {
 

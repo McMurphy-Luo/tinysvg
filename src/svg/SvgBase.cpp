@@ -3,10 +3,18 @@
 
 NAMESPACE_BEGIN
 
-NodeDelegate<nullptr_t> EmptyNode() {
-  return NodeDelegate<nullptr_t>(
-    std::make_shared<Node<nullptr_t>>(nullptr)
+void NodeDelegateBase::Detach() {
+  if (!the_node_->parent.expired()) {
+    std::shared_ptr<NodeBase> parent = the_node_->parent.lock();
+    parent->children.erase(
+      std::remove(
+        parent->children.begin(),
+        parent->children.end(),
+        the_node_
+      ),
+      parent->children.end()
     );
+  }
 }
 
 NAMESPACE_END

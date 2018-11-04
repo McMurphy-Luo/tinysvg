@@ -9,6 +9,9 @@ NAMESPACE_BEGIN
 class SvgCircle
 {
 public:
+  static constexpr SvgType Type = SvgType::Circle;
+
+public:
   SvgCircle(SvgLength cx, SvgLength cy, SvgLength r)
     : cx_(cx)
     , cy_(cy)

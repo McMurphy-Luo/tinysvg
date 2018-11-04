@@ -9,6 +9,9 @@ NAMESPACE_BEGIN
 class SvgEllipse
 {
 public:
+  static constexpr SvgType Type = SvgType::Ellipse;
+
+public:
   SvgEllipse(SvgLength cx, SvgLength cy, SvgLength rx, SvgLength ry) {
 
   }

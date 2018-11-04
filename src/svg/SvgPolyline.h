@@ -10,6 +10,9 @@ NAMESPACE_BEGIN
 class SvgPolyline
 {
 public:
+  static constexpr SvgType Type = SvgType::Polyline;
+
+public:
   SvgPolyline(const std::vector<SvgPoint>& points)
     : points_(points)
   {
