@@ -106,6 +106,7 @@ struct SvgPoint
 
 struct NodeBase
 {
+  virtual ~NodeBase() {}
   std::vector<std::shared_ptr<NodeBase>> children;
   std::weak_ptr<NodeBase> parent;
 };
@@ -185,16 +186,12 @@ public:
   }
 
 public:
-  T& Value() { return the_node_->Value(); }
+  T& Value() { return std::dynamic_pointer_cast<Node<T>>(the_node_)->Value(); }
 
-  const T& Value() const { return the_node_->Value(); }
+  const T& Value() const { return std::dynamic_pointer_cast<Node<T>>(the_node_)->Value(); }
 };
 
-NodeDelegate<nullptr_t> EmptyNode() {
-  return NodeDelegate<nullptr_t>(
-    std::make_shared<Node<nullptr_t>>(nullptr)
-    );
-}
+NodeDelegate<nullptr_t> EmptyNode();
 
 NAMESPACE_END
 

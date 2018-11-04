@@ -37,7 +37,7 @@ namespace { // unamed namespace for this file static staff
     optional<NodeDelegate<SvgSvg>> Parse();
 
   private:
-    void ConstructNode(XMLElement* element);
+    optional<NodeDelegateBase> ConstructNode(XMLElement* element);
 
     optional<SvgSvg> ParseSvgElement(XMLElement* element);
 
@@ -56,66 +56,73 @@ namespace { // unamed namespace for this file static staff
   private:
     XMLDocument document_;
     XMLError error_;
-    NodeDelegateBase current_node_;
+    NodeDelegateBase root_delegate_;
+    NodeDelegateBase parent_delegate_;
   };
 
   SvgDocumentParser::SvgDocumentParser(const char* buffer, size_t buffer_size)
     : document_()
     , error_(XML_SUCCESS)
-    , current_node_(EmptyNode())
+    , root_delegate_(EmptyNode())
+    , parent_delegate_(root_delegate_)
   {
     error_ = document_.Parse(buffer, buffer_size);
   }
 
   optional<NodeDelegate<SvgSvg>> SvgDocumentParser::Parse() {
+    optional<NodeDelegateBase> result_tree = ConstructNode(document_.RootElement());
+    if (result_tree.has_value() && result_tree.value().To<SvgSvg>()) {
+      return result_tree.value().To<SvgSvg>();
+    }
     return nullptr;
   }
 
-  void SvgDocumentParser::ConstructNode(XMLElement* element) {
+  optional<NodeDelegateBase> SvgDocumentParser::ConstructNode(XMLElement* element) {
     DomString nodeName(element->Name());
-    NodeDelegateBase next_delegate = EmptyNode();
+    NodeDelegateBase me_delegate = EmptyNode();
     if (nodeName == DomString(u8"svg")) {
       optional<SvgSvg> svg_svg = ParseSvgElement(element);
       if (svg_svg) {
-        next_delegate = current_node_.AddChild(svg_svg.value());
+        me_delegate = parent_delegate_.AddChild(svg_svg.value());
       }
     }
     else if (nodeName == DomString(u8"line")) {
       optional<SvgLine> svg_line = ParseSvgLineElement(element);
       if (svg_line) {
-        next_delegate = current_node_.AddChild(svg_line.value());
+        me_delegate = parent_delegate_.AddChild(svg_line.value());
       }
     }
     else if (nodeName == DomString(u8"rect")) {
       optional<SvgRect> svg_rect = ParseSvgRectElement(element);
       if (svg_rect) {
-        next_delegate = current_node_.AddChild(svg_rect.value());
+        me_delegate = parent_delegate_.AddChild(svg_rect.value());
       }
     }
     else if (nodeName == DomString(u8"circle")) {
       optional<SvgCircle> svg_circle = ParseSvgCircleElement(element);
       if (svg_circle) {
-        next_delegate = current_node_.AddChild(svg_circle.value());
+        me_delegate = parent_delegate_.AddChild(svg_circle.value());
       }
     }
     else if (nodeName == DomString(u8"ellipse")) {
       optional<SvgEllipse> svg_ellipse = ParseSvgEllipseElement(element);
       if (svg_ellipse) {
-        next_delegate = current_node_.AddChild(svg_ellipse.value());
+        me_delegate = parent_delegate_.AddChild(svg_ellipse.value());
       }
     }
     else if (nodeName == DomString(u8"polygon")) {
       optional<SvgPolygon> svg_polygon = ParseSvgPolygonElement(element);
       if (svg_polygon) {
-        next_delegate = current_node_.AddChild(svg_polygon.value());
+        me_delegate = parent_delegate_.AddChild(svg_polygon.value());
       }
     }
     else if (nodeName == DomString(u8"polyline")) {
       optional<SvgPolyline> svg_polyline = ParseSvgPolylineElement(element);
       if (svg_polyline) {
-        next_delegate = current_node_.AddChild(svg_polyline.value());
+        me_delegate = parent_delegate_.AddChild(svg_polyline.value());
       }
     }
+    return me_delegate;
   }
 
   optional<SvgSvg> SvgDocumentParser::ParseSvgElement(XMLElement* element)

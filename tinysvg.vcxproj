@@ -106,6 +106,7 @@
     <ClCompile Include="src\svg\SvgPolyline.cpp" />
     <ClCompile Include="src\svg\SvgRect.cpp" />
     <ClCompile Include="src\svg\SvgSvg.cpp" />
+    <ClCompile Include="third_party\tinyxml2\tinyxml2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
