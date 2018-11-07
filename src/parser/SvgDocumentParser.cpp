@@ -87,25 +87,25 @@ namespace { // unamed namespace for this file static staff
     DomString nodeName(element->Name());
     optional<NodeDelegateBase> me;
     if (nodeName == DomString(u8"svg")) {
-      me = AddNode(ParseSvgElement(element), parent);
+      me = AddNode<SvgSvg>(ParseSvgElement(element), parent);
     }
     else if (nodeName == DomString(u8"line")) {
-      me = AddNode(ParseSvgLineElement(element), parent);
+      me = AddNode<SvgLine>(ParseSvgLineElement(element), parent);
     }
     else if (nodeName == DomString(u8"rect")) {
-      me = AddNode(ParseSvgRectElement(element), parent);
+      me = AddNode<SvgRect>(ParseSvgRectElement(element), parent);
     }
     else if (nodeName == DomString(u8"circle")) {
-      me = AddNode(ParseSvgCircleElement(element), parent);
+      me = AddNode<SvgCircle>(ParseSvgCircleElement(element), parent);
     }
     else if (nodeName == DomString(u8"ellipse")) {
-      me = AddNode(ParseSvgEllipseElement(element), parent);
+      me = AddNode<SvgEllipse>(ParseSvgEllipseElement(element), parent);
     }
     else if (nodeName == DomString(u8"polygon")) {
-      me = AddNode(ParseSvgPolygonElement(element), parent);
+      me = AddNode<SvgPolygon>(ParseSvgPolygonElement(element), parent);
     }
     else if (nodeName == DomString(u8"polyline")) {
-      me = AddNode(ParseSvgPolylineElement(element), parent);
+      me = AddNode<SvgPolyline>(ParseSvgPolylineElement(element), parent);
     }
     return me;
   }
