@@ -27,25 +27,32 @@ class optional
 {
 public:
   optional()
-  : value_(nullptr) {
+    : value_(nullptr)
+  {
 
   }
 
   optional(nullptr_t)
-    : value_(nullptr) {
+    : value_(nullptr)
+  {
 
   }
 
-  template<typename T, typename std::enable_if<std::is_copy_constructible<T>::value || std::is_trivial<T>::value, int>::type = 0>
-  optional(const optional<T>& another)
-  : value_(nullptr) {
+  /*
+  template<typename = std::enable_if_t<std::is_copy_constructible<T>::value>>
+  */
+  optional(const optional& another)
+    : value_(nullptr)
+  {
     if (another.has_value()) {
       value_ = std::make_unique<T>(*(another.value_));
     }
   }
 
-  template<typename T, typename std::enable_if<(std::is_copy_constructible<T>::value && std::is_copy_assignable<T>::value) || std::is_trivial<T>::value, int>::type = 0>
-  optional& operator=(const optional<T>& another) {
+  template<typename std::enable_if<std::is_copy_assignable<T>::value && std::is_copy_constructible<T>::value, int>::type = 0>
+  //template<typename int = 5>
+  optional<T>& operator=(const optional<T>& another)
+  {
     if (this == &another) {
       return *this;
     }
@@ -61,12 +68,12 @@ public:
     return *this;
   }
 
-  template<typename std::enable_if<std::is_copy_constructible<T>::value, int>::type = 0>
+  template<typename = std::enable_if_t<std::is_copy_constructible<T>::value>>
   optional(const T& value) {
     value_ = std::make_unique<T>(value);
   }
 
-  template<typename std::enable_if<std::is_copy_assignable<T>::value && std::is_copy_assignable<T>::value || std::is_trivial<T>::value, int>::type = 0>
+  template<typename = std::enable_if_t<std::is_copy_assignable<T>::value && std::is_copy_constructible<T>::value>>
   optional<T>& operator=(const T& another) {
     if (has_value()) {
       *value_ = another;
@@ -77,24 +84,19 @@ public:
     return *this;
   }
 
+  /*
   optional(optional<T>&& another)
   : value_(std::move(another.value_)) {
 
   }
+  */
 
-  template<typename = std::enable_if<std::is_move_constructible<T>::value>>
+  /*
   optional<T>& operator=(optional<T>&& another) {
     value_ = std::move(another.value_);
     return *this;
   }
-
-  template<typename = std::enable_if<std::is_move_constructible<T>::value>>
-  optional<T>& operator=(T&& another) {
-    if (has_value()) {
-      value_.reset();
-    }
-    value_ = std::make_unique<T>(another);
-  }
+  */
 
   operator bool() const {
     return has_value();
