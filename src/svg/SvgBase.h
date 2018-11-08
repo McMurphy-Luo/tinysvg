@@ -22,11 +22,24 @@ using std::optional;
 
 #else // __cpp_lib_optional
 
+struct in_place_t {
+  explicit in_place_t() = default;
+};
+constexpr in_place_t in_place{};
+
 template<typename T>
-struct optional_base
+class optional_base
 {
+public:
   optional_base()
     : value_(nullptr)
+  {
+
+  }
+
+  template<typename... Args>
+  optional_base(in_place_t, Args&&... args)
+    : value_(std::make_unique<T>(std::forward<Args>(args)...))
   {
 
   }
@@ -47,6 +60,17 @@ struct optional_base
   {
     value_ = std::move(another.value_);
     return *this;
+  }
+
+  optional_base(T&& another)
+    : value_(std::make_unique<T>(another))
+  {
+
+  }
+
+  optional_base& operator=(T&& another)
+  {
+    *value_ = another;
   }
 
   operator bool() const {
@@ -148,6 +172,12 @@ typename std::conditional<
   optional_base<T>
 >::type;
 
+template<typename T, typename... Args>
+constexpr optional<T> make_optional(Args&&... args)
+{
+  return optional<T>(in_place, std::forward<Args>(args)...);
+}
+
 #endif
 
 typedef double_t SvgLength;
@@ -230,17 +260,16 @@ public:
   NodeDelegateBase& operator=(const NodeDelegateBase& another) = delete;
 
   NodeDelegateBase(NodeDelegateBase&& another)
-  : the_node_(another.the_node_) {
+  : the_node_(another.the_node_)
+  {
     another.the_node_.reset();
   }
 
   NodeDelegateBase& operator=(NodeDelegateBase&& another) {
-    the_node_.reset();
     the_node_.swap(another.the_node_);
     return *this;
   }
 
-public:
   SvgType const Type() { return the_node_->Type(); }
 
   template<typename T>
@@ -252,11 +281,10 @@ public:
 
   template<typename T>
   optional<NodeDelegate<T>> To() {
-    optional<NodeDelegate<T>> result;
     if (std::dynamic_pointer_cast<Node<T>>(the_node_)) {
-      result = NodeDelegate<T>(std::dynamic_pointer_cast<Node<T>>(the_node_));
+      return make_optional<NodeDelegate<T>>(std::dynamic_pointer_cast<Node<T>>(the_node_));
     }
-    return result;
+    return optional<NodeDelegate<T>>();
   }
 
   void Detach();
@@ -279,11 +307,13 @@ public:
   NodeDelegate& operator=(const NodeDelegate<T>& another) = delete;
 
   NodeDelegate(NodeDelegate<T>&& another)
-    :NodeDelegateBase(another.the_node_) {
+    : NodeDelegateBase(another.the_node_)
+  {
 
   }
 
-  NodeDelegate& operator=(NodeDelegate<T>&& another) {
+  NodeDelegate& operator=(NodeDelegate<T>&& another)
+  {
     return *this;
   }
 
@@ -302,7 +332,8 @@ template<>
 class NodeDelegate<nullptr_t> : public NodeDelegateBase {
 public:
   NodeDelegate()
-    : NodeDelegateBase(std::make_shared<Node<nullptr_t>>()) {
+    : NodeDelegateBase(std::make_shared<Node<nullptr_t>>())
+  {
 
   }
 };

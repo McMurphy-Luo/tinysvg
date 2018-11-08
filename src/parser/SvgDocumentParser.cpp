@@ -42,7 +42,7 @@ namespace { // unamed namespace for this file static staff
     template<typename T>
     optional<NodeDelegateBase> AddNode(optional<T> target, NodeDelegateBase* parent) {
       if (target.has_value()) {
-        return parent->AddChild(target.value());
+        NodeDelegateBase child_delegate = parent->AddChild(target.value());
       }
       return nullptr;
     }
