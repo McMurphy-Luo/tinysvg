@@ -42,9 +42,9 @@ namespace { // unamed namespace for this file static staff
     template<typename T>
     optional<NodeDelegateBase> AddNode(optional<T> target, NodeDelegateBase* parent) {
       if (target.has_value()) {
-        NodeDelegateBase child_delegate = parent->AddChild(target.value());
+        return parent->AddChild(target.value());
       }
-      return nullptr;
+      return nullopt;
     }
 
     optional<SvgSvg> ParseSvgElement(XMLElement* element);
@@ -80,7 +80,7 @@ namespace { // unamed namespace for this file static staff
     if (result_tree.has_value() && result_tree.value().Type() == SvgType::Svg) {
       return result_tree.value().To<SvgSvg>();
     }
-    return nullptr;
+    return nullopt;
   }
 
   optional<NodeDelegateBase> SvgDocumentParser::ConstructNode(XMLElement* element, NodeDelegateBase* parent) {
@@ -115,7 +115,7 @@ namespace { // unamed namespace for this file static staff
     DomString nodeName(element->Name());
     assert(nodeName == DomString(u8"svg"));
     if (nodeName != DomString(u8"svg")) {
-      return nullptr;
+      return nullopt;
     }
     SvgSvg result;
     DomString viewBox = DomString(element->Attribute(u8"viewBox"));

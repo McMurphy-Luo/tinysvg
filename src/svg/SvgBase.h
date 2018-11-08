@@ -4,14 +4,13 @@
 #include "../Config.h"
 #include <cmath>
 #include <vector>
-#include <algorithm>
-#include <type_traits>
+#include <cassert>
+#include <memory>
 
 #ifdef __cpp_lib_optional
 #include <optional>
 #else
-#include <cassert>
-#include <memory>
+#include <type_traits>
 #endif// __cpp_lib_optional
 
 NAMESPACE_BEGIN
@@ -19,6 +18,9 @@ NAMESPACE_BEGIN
 #ifdef __cpp_lib_optional
 
 using std::optional;
+using std::make_optional;
+using std::nullopt;
+using std::nullopt_t;
 
 #else // __cpp_lib_optional
 
@@ -26,6 +28,11 @@ struct in_place_t {
   explicit in_place_t() = default;
 };
 constexpr in_place_t in_place{};
+
+struct nullopt_t {
+  explicit constexpr nullopt_t(int) {}
+};
+constexpr nullopt_t nullopt{0};
 
 template<typename T>
 class optional_base
@@ -44,7 +51,7 @@ public:
 
   }
 
-  optional_base(nullptr_t)
+  optional_base(nullopt_t)
     : value_(nullptr)
   {
 
@@ -62,13 +69,13 @@ public:
     return *this;
   }
 
-  optional_base(T&& another)
-    : value_(std::make_unique<T>(another))
+  optional_base(T&& another) noexcept
+    : value_(std::make_unique<T>(std::move(another)))
   {
 
   }
 
-  optional_base& operator=(T&& another)
+  optional_base& operator=(T&& another) noexcept
   {
     *value_ = another;
   }
@@ -110,14 +117,14 @@ public:
 
   }
 
-  optional_copyable(nullptr_t)
-    : optional_base<T>(nullptr)
+  optional_copyable(nullopt_t)
+    : optional_base<T>(nullopt)
   {
 
   }
 
   optional_copyable(const optional_copyable& another)
-    : optional_base<T>(nullptr)
+    : optional_base<T>(nullopt)
   {
     if (another.has_value()) {
       this->value_ = std::make_unique<T>(another.value());
@@ -142,7 +149,7 @@ public:
   }
   
   optional_copyable(const T& value)
-    : optional_base<T>(nullptr)
+    : optional_base<T>(nullopt)
   {
     if (this->has_value()) {
       *(this->value_) = value;
@@ -259,13 +266,13 @@ public:
 
   NodeDelegateBase& operator=(const NodeDelegateBase& another) = delete;
 
-  NodeDelegateBase(NodeDelegateBase&& another)
+  NodeDelegateBase(NodeDelegateBase&& another) noexcept
   : the_node_(another.the_node_)
   {
     another.the_node_.reset();
   }
 
-  NodeDelegateBase& operator=(NodeDelegateBase&& another) {
+  NodeDelegateBase& operator=(NodeDelegateBase&& another) noexcept {
     the_node_.swap(another.the_node_);
     return *this;
   }
