@@ -1,8 +1,10 @@
+#include "../Config.h"
 #include "gtest/gtest.h"
 #include "common/DomString.h"
 
 using namespace tinysvg;
 using namespace std;
+
 
 TEST(DomStringTest, EmptyStringTest)
 {

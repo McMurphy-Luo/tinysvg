@@ -1,7 +1,9 @@
+#include "../Config.h"
 #include "gtest/gtest.h"
 #include "parser/SvgDocumentParser.h"
 
 using namespace tinysvg;
+
 
 TEST(SvgDocumentParserTest, SimpleDocument) {
   const char document[] = u8"<svg viewBox=\"0 0 300 100\" xmlns=\"http://www.w3.org/2000/svg\"></svg>";

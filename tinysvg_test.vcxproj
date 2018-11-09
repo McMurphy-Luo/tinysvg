@@ -12,10 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\common\DomStringTest.cpp" />
+    <ClCompile Include="test\Main.cpp" />
     <ClCompile Include="test\parser\MiscParserTest.cpp" />
     <ClCompile Include="test\parser\SvgDocumentParserTest.cpp" />
     <ClCompile Include="third_party\googletest\googletest\src\gtest-all.cc" />
-    <ClCompile Include="third_party\googletest\googletest\src\gtest_main.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

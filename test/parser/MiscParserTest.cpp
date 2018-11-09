@@ -1,8 +1,10 @@
+#include "../Config.h"
 #include "parser/MiscParser.h"
 #include "gtest/gtest.h"
 
 using namespace tinysvg;
 using namespace std;
+
 
 TEST(MiscParserTest, ParseNumericList) {
   pair<bool, vector<SvgLength>> result = ParseNumericList("");
@@ -37,4 +39,3 @@ TEST(MiscParserTest, ParseNumericList) {
   EXPECT_DOUBLE_EQ(result.second[2], -1322654) << result.second[2];
   EXPECT_DOUBLE_EQ(result.second[3], 708123.05246) << result.second[3];
 }
-

@@ -7,10 +7,4 @@
 // Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
 // allocations to be of _CLIENT_BLOCK type
 
-#define DumpMemoryLeaks() _CrtDumpMemoryLeaks();
-
-#else // _WIN32
-
-#define DumpMemoryLeaks()
-
 #endif // _WIN32
