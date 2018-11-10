@@ -35,7 +35,5 @@ GTEST_API_ int main(int argc, char **argv) {
   // Adds a listener to the end.  googletest takes the ownership.
   listeners.Append(new MemoryChecker);
 
-  int result = RUN_ALL_TESTS();
-
-  return result;
+  return RUN_ALL_TESTS();
 }

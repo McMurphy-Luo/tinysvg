@@ -50,13 +50,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\target\</OutDir>
-    <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\object\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\target\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\object\$(ProjectName)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)build\$(ProjectName)\$(Platform)\$(Configuration)\target\</OutDir>
-    <IntDir>$(ProjectDir)build\$(ProjectName)\$(Platform)\$(Configuration)\obj\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\target\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Platform)\$(Configuration)\object\$(ProjectName)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
