@@ -98,9 +98,9 @@ public:
 
   }
 
-  operator Utf8String() { return data_; }
+  operator Utf8String() const { return data_; }
 
-  operator std::wstring() { return Utf8StringToWideString(data_); }
+  operator std::wstring() const { return Utf8StringToWideString(data_); }
 
   std::size_t ChararcterCount() const;
 

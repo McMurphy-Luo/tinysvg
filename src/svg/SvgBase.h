@@ -208,6 +208,11 @@ enum class SvgType
   Svg
 };
 
+struct SvgNone
+{
+  static constexpr SvgType Type = SvgType::None;
+};
+
 struct NodeBase
 {
   virtual ~NodeBase() {}
@@ -236,19 +241,6 @@ private:
   T data_;
 };
 
-template<>
-class Node<nullptr_t>
-  : public NodeBase
-{
-public:
-  explicit Node() {
-
-  }
-
-public:
-  virtual SvgType Type() const { return SvgType::Circle; }
-};
-
 template<typename T>
 class NodeDelegate;
 
@@ -267,24 +259,17 @@ public:
   NodeDelegateBase& operator=(const NodeDelegateBase& another) = delete;
 
   NodeDelegateBase(NodeDelegateBase&& another) noexcept
-  : the_node_(another.the_node_)
+  : the_node_(std::move(another.the_node_))
   {
-    another.the_node_.reset();
+
   }
 
   NodeDelegateBase& operator=(NodeDelegateBase&& another) noexcept {
-    the_node_.swap(another.the_node_);
+    the_node_ = std::move(another.the_node_);
     return *this;
   }
 
   SvgType const Type() { return the_node_->Type(); }
-
-  template<typename T>
-  NodeDelegate<T> AddChild(const T& target) {
-    std::shared_ptr<Node<T>> child_new_created = std::make_shared<Node<T>>(target);
-    the_node_->children.push_back(child_new_created);
-    return NodeDelegate<T>(child_new_created);
-  }
 
   template<typename T>
   optional<NodeDelegate<T>> To() {
@@ -294,15 +279,13 @@ public:
     return optional<NodeDelegate<T>>();
   }
 
-  void Detach();
-
 protected:
   std::shared_ptr<NodeBase> the_node_;
 };
 
 template<typename T>
 class NodeDelegate: public NodeDelegateBase {
-public:
+protected:
   NodeDelegate(std::shared_ptr<Node<T>> node)
     :NodeDelegateBase(node)
   {
@@ -313,6 +296,7 @@ public:
 
   NodeDelegate& operator=(const NodeDelegate<T>& another) = delete;
 
+public:
   NodeDelegate(NodeDelegate<T>&& another)
     : NodeDelegateBase(another.the_node_)
   {
@@ -324,6 +308,19 @@ public:
     return *this;
   }
 
+  NodeDelegateBase FirstChild() const;
+
+  NodeDelegateBase NextSibling() const;
+
+  template<typename T>
+  NodeDelegate<T> AddChild(const T& target) {
+    std::shared_ptr<Node<T>> child_new_created = std::make_shared<Node<T>>(target);
+    the_node_->children.push_back(child_new_created);
+    return NodeDelegate<T>(child_new_created);
+  }
+
+  void Detach();
+
   T& Value() {
     assert(Type() == T::Type);
     return std::dynamic_pointer_cast<Node<T>>(the_node_)->Value();
@@ -332,16 +329,6 @@ public:
   const T& Value() const {
     assert(Type() == T::Type);
     return std::dynamic_pointer_cast<Node<T>>(the_node_)->Value();
-  }
-};
-
-template<>
-class NodeDelegate<nullptr_t> : public NodeDelegateBase {
-public:
-  NodeDelegate()
-    : NodeDelegateBase(std::make_shared<Node<nullptr_t>>())
-  {
-
   }
 };
 
