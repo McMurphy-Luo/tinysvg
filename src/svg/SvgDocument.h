@@ -8,10 +8,11 @@
 
 NAMESPACE_BEGIN
 
+template<typename T>
 class SvgDocument
 {
 public:
-  SvgDocument()
+  explicit SvgDocument()
     : root_node_()
   {
 
@@ -21,10 +22,24 @@ public:
 
   SvgDocument& operator=(const SvgDocument&) = delete;
 
-  NodeDelegateBase RootNode() const { if (!root_node_) return NodeDelegate<SvgNone>(); }
+  NodeDelegateBase RootNode() const {
+    if (!root_node_) {
+      return NodeDelegate<SvgNone>();
+    } 
+    return NodeDelegateBase(root_node_);
+  }
+
+  void SetRoot(const T& value){
+    if (!root_node_) {
+      root_node_ = std::make_shared<Node<T>>(value);
+    }
+    else {
+      *root_node_ = value;
+    }
+  }
 
 private:
-  std::shared_ptr<Node<SvgSvg>> root_node_;
+  std::shared_ptr<NodeBase> root_node_;
 };
 
 NAMESPACE_END

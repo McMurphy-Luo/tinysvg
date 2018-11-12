@@ -85,6 +85,7 @@
     <ClInclude Include="src\svg\SvgBase.h" />
     <ClInclude Include="src\svg\SvgCircle.h" />
     <ClInclude Include="src\svg\SvgColor.h" />
+    <ClInclude Include="src\svg\SvgDocument.h" />
     <ClInclude Include="src\svg\SvgEllipse.h" />
     <ClInclude Include="src\svg\SvgLine.h" />
     <ClInclude Include="src\svg\SvgPolygon.h" />
@@ -100,6 +101,7 @@
     <ClCompile Include="src\svg\SvgBase.cpp" />
     <ClCompile Include="src\svg\SvgCircle.cpp" />
     <ClCompile Include="src\svg\SvgColor.cpp" />
+    <ClCompile Include="src\svg\SvgDocument.cpp" />
     <ClCompile Include="src\svg\SvgEllipse.cpp" />
     <ClCompile Include="src\svg\SvgLine.cpp" />
     <ClCompile Include="src\svg\SvgPolygon.cpp" />

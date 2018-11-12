@@ -246,6 +246,8 @@ class NodeDelegate;
 
 class NodeDelegateBase
 {
+  template<typename T>
+  friend class SvgDocument;
 protected:
   explicit NodeDelegateBase(std::shared_ptr<NodeBase> the_node)
     : the_node_(the_node)
@@ -329,6 +331,15 @@ public:
   const T& Value() const {
     assert(Type() == T::Type);
     return std::dynamic_pointer_cast<Node<T>>(the_node_)->Value();
+  }
+};
+
+template<>
+class NodeDelegate<SvgNone> : public NodeDelegateBase {
+public:
+  NodeDelegate()
+    : NodeDelegateBase(nullptr) {
+
   }
 };
 

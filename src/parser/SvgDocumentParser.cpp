@@ -64,13 +64,13 @@ namespace { // unamed namespace for this file static staff
   private:
     XMLDocument document_;
     XMLError error_;
-    NodeDelegateBase root_delegate_;
+    SvgDocument<SvgSvg> svg_doc_;
   };
 
   SvgDocumentParser::SvgDocumentParser(const char* buffer, size_t buffer_size)
     : document_()
     , error_(XML_SUCCESS)
-    , root_delegate_(NodeDelegate<nullptr_t>())
+    , svg_doc_()
   {
     error_ = document_.Parse(buffer, buffer_size);
   }

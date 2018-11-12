@@ -6,10 +6,11 @@
 #include <utility>
 #include "../svg/SvgSvg.h"
 #include "../svg/SvgBase.h"
+#include "../svg/SvgDocument.h"
 
 NAMESPACE_BEGIN
 
-optional<NodeDelegate<SvgSvg>> Parse(const char* buffer, std::size_t buffer_size);
+optional<SvgDocument<SvgSvg>> Parse(const char* buffer, std::size_t buffer_size);
 
 NAMESPACE_END
 
