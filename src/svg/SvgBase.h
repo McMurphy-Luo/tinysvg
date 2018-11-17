@@ -271,6 +271,10 @@ public:
     return *this;
   }
 
+  operator bool() {
+    return !!the_node_;
+  }
+
   SvgType const Type() { return the_node_->Type(); }
 
   template<typename T>
@@ -339,6 +343,19 @@ class NodeDelegate<SvgNone> : public NodeDelegateBase {
 public:
   NodeDelegate()
     : NodeDelegateBase(nullptr) {
+
+  }
+
+  NodeDelegate(const NodeDelegate& another)
+    : NodeDelegateBase(nullptr) {
+    
+  }
+
+  NodeDelegate& operator=(const NodeDelegate& another) {
+    // do nothing
+  }
+
+  NodeDelegate(const NodeDelegate&& another) {
 
   }
 };
