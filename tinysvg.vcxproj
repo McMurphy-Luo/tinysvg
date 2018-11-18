@@ -80,8 +80,6 @@
     <ClInclude Include="src\common\Convert.h" />
     <ClInclude Include="src\common\DomString.h" />
     <ClInclude Include="src\Config.h" />
-    <ClInclude Include="src\parser\MiscParser.h" />
-    <ClInclude Include="src\parser\SvgDocumentParser.h" />
     <ClInclude Include="src\svg\SvgBase.h" />
     <ClInclude Include="src\svg\SvgCircle.h" />
     <ClInclude Include="src\svg\SvgColor.h" />
@@ -96,8 +94,6 @@
   <ItemGroup>
     <ClCompile Include="src\common\Convert..cpp" />
     <ClCompile Include="src\common\DomString.cpp" />
-    <ClCompile Include="src\parser\MiscParser.cpp" />
-    <ClCompile Include="src\parser\SvgDocumentParser.cpp" />
     <ClCompile Include="src\svg\SvgBase.cpp" />
     <ClCompile Include="src\svg\SvgCircle.cpp" />
     <ClCompile Include="src\svg\SvgColor.cpp" />

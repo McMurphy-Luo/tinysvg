@@ -197,7 +197,6 @@ struct SvgPoint
 
 enum class SvgType
 {
-  None,
   Line,
   Circle,
   Rectangle,
@@ -206,11 +205,6 @@ enum class SvgType
   Polyline,
   Rect,
   Svg
-};
-
-struct SvgNone
-{
-  static constexpr SvgType Type = SvgType::None;
 };
 
 struct NodeBase
@@ -246,8 +240,6 @@ class NodeDelegate;
 
 class NodeDelegateBase
 {
-  template<typename T>
-  friend class SvgDocument;
 protected:
   explicit NodeDelegateBase(std::shared_ptr<NodeBase> the_node)
     : the_node_(the_node)
@@ -271,10 +263,6 @@ public:
     return *this;
   }
 
-  operator bool() {
-    return !!the_node_;
-  }
-
   SvgType const Type() { return the_node_->Type(); }
 
   template<typename T>
@@ -282,7 +270,7 @@ public:
     if (std::dynamic_pointer_cast<Node<T>>(the_node_)) {
       return make_optional<NodeDelegate<T>>(std::dynamic_pointer_cast<Node<T>>(the_node_));
     }
-    return optional<NodeDelegate<T>>();
+    return nullptr;
   }
 
 protected:
@@ -291,6 +279,7 @@ protected:
 
 template<typename T>
 class NodeDelegate: public NodeDelegateBase {
+  friend class SvgDocument;
 protected:
   NodeDelegate(std::shared_ptr<Node<T>> node)
     :NodeDelegateBase(node)
@@ -318,11 +307,11 @@ public:
 
   NodeDelegateBase NextSibling() const;
 
-  template<typename T>
-  NodeDelegate<T> AddChild(const T& target) {
-    std::shared_ptr<Node<T>> child_new_created = std::make_shared<Node<T>>(target);
+  template<typename N>
+  NodeDelegate<N> AddChild(const N& target) {
+    std::shared_ptr<Node<N>> child_new_created = std::make_shared<Node<N>>(target);
     the_node_->children.push_back(child_new_created);
-    return NodeDelegate<T>(child_new_created);
+    return NodeDelegate<N>(child_new_created);
   }
 
   void Detach();
@@ -335,28 +324,6 @@ public:
   const T& Value() const {
     assert(Type() == T::Type);
     return std::dynamic_pointer_cast<Node<T>>(the_node_)->Value();
-  }
-};
-
-template<>
-class NodeDelegate<SvgNone> : public NodeDelegateBase {
-public:
-  NodeDelegate()
-    : NodeDelegateBase(nullptr) {
-
-  }
-
-  NodeDelegate(const NodeDelegate& another)
-    : NodeDelegateBase(nullptr) {
-    
-  }
-
-  NodeDelegate& operator=(const NodeDelegate& another) {
-    // do nothing
-  }
-
-  NodeDelegate(const NodeDelegate&& another) {
-
   }
 };
 

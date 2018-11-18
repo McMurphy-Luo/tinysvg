@@ -10,7 +10,7 @@
 #include "./SvgEllipse.h"
 #include "./SvgPolygon.h"
 #include "./SvgPolyline.h"
-#include "../svg/SvgCircle.h"
+#include "./SvgCircle.h"
 
 using std::size_t;
 using std::pair;
@@ -27,30 +27,66 @@ using tinyxml2::XMLNode;
 
 NAMESPACE_BEGIN
 
-namespace detail {
-
-
-}
-
-namespace { // unamed namespace for this file static staff
+namespace {
   
+  /*
+    SvgDocument<T> Parse() {
+      SvgDocument<T> doc;
+      ConstructRootNode(&doc);
+      do {
+        NodeDelegateBase root_node = doc.RootNode();
+        if (!root_node) {
+          break;
+        }
+        NodeDelegateBase the_real_root = root.To<T>();
 
-  SvgDocumentParser::SvgDocumentParser(const char* buffer, size_t buffer_size)
-    : document_()
-    , error_(XML_SUCCESS)
-  {
-    error_ = document_.Parse(buffer, buffer_size);
-  }
 
-  NodeDelegateBase SvgDocumentParser::ConstructRootNode(SvgDocument* doc) {
+
+        doc.SetRoot(the_real_root.value().Value());
+
+
+
+        optional<NodeDelegateBase> result_tree = ConstructNode(document_.RootElement(), &root_delegate_);
+        if (result_tree.has_value() && result_tree.value().Type() == SvgType::Svg) {
+          return result_tree.value().To<T>();
+        }
+        return nullopt;
+
+
+
+
+      } while (false);
+      return doc;
+    }
+
+
+    void ConstructRootNode(SvgDocument<T>* doc) {
+      XMLElement* root_element = document_.RootElement();
+      if (!root_element) {
+        return NodeDelegate<SvgNone>();
+      }
+      DomString node_name(root_element->Name());
+      if (node_name != DomString(u8"svg")) {
+        return NodeDelegate<SvgNone>();
+      }
+      optional<T> root_data = ParseSvgElement(root_element);
+      if (!root_data) {
+        return NodeDelegate<SvgNone>();
+      }
+      doc->SetRoot(root_data.value());
+    }
+
+    template<typename T>
+    NodeDelegateBase AddNode(optional<T> target, NodeDelegateBase* parent) {
+      if (target.has_value()) {
+        return parent->AddChild(target.value());
+      }
+      return nullopt;
+    }
+    */
     
-
-
-  }
-
-  optional<NodeDelegate<SvgSvg>> SvgDocumentParser::Parse()
-
-  optional<NodeDelegateBase> SvgDocumentParser::ConstructNode(XMLElement* element, NodeDelegateBase* parent) {
+  template<typename T>
+  optional<NodeDelegateBase> ConstructNode(XMLElement* element, NodeDelegate<T>* parent) {
     DomString nodeName(element->Name());
     optional<NodeDelegateBase> me;
     if (nodeName == DomString(u8"svg")) {
@@ -77,7 +113,7 @@ namespace { // unamed namespace for this file static staff
     return me;
   }
 
-  optional<SvgSvg> SvgDocumentParser::ParseSvgElement(XMLElement* element)
+  optional<SvgSvg> ParseSvgElement(XMLElement* element)
   {
     DomString nodeName(element->Name());
     assert(nodeName == DomString(u8"svg"));
@@ -106,7 +142,7 @@ namespace { // unamed namespace for this file static staff
     return result;
   }
 
-  optional<SvgLine> SvgDocumentParser::ParseSvgLineElement(XMLElement* element)
+  optional<SvgLine> ParseSvgLineElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"line");
@@ -130,7 +166,7 @@ namespace { // unamed namespace for this file static staff
     return the_line;
   }
 
-  optional<SvgRect> SvgDocumentParser::ParseSvgRectElement(XMLElement* element)
+  optional<SvgRect> ParseSvgRectElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"rect");
@@ -154,7 +190,7 @@ namespace { // unamed namespace for this file static staff
     return the_rectangle;
   }
 
-  optional<SvgCircle> SvgDocumentParser::ParseSvgCircleElement(XMLElement* element)
+  optional<SvgCircle> ParseSvgCircleElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"circle");
@@ -174,7 +210,7 @@ namespace { // unamed namespace for this file static staff
     return the_circle;
   }
 
-  optional<SvgEllipse> SvgDocumentParser::ParseSvgEllipseElement(XMLElement* element)
+  optional<SvgEllipse> ParseSvgEllipseElement(XMLElement* element)
   {
     DomString element_name(element->Name());
     assert(element_name == u8"ellipse");
@@ -198,13 +234,13 @@ namespace { // unamed namespace for this file static staff
     return the_ellipse;
   }
 
-  optional<SvgPolygon> SvgDocumentParser::ParseSvgPolygonElement(XMLElement* element)
+  optional<SvgPolygon> ParseSvgPolygonElement(XMLElement* element)
   {
     SvgPolygon the_polygon;
     return the_polygon;
   }
 
-  optional<SvgPolyline> SvgDocumentParser::ParseSvgPolylineElement(XMLElement* element)
+  optional<SvgPolyline> ParseSvgPolylineElement(XMLElement* element)
   {
     SvgPolyline the_polyline;
     return the_polyline;
@@ -213,9 +249,25 @@ namespace { // unamed namespace for this file static staff
 } // end unamed namespace
 
 
-SvgDocument<T> Parse(const char* buffer, size_t buffer_size)
-{
-  return SvgDocumentParser(buffer, buffer_size).Parse();
+SvgDocument Parse(const DomString& document_string_represent) {
+  XMLDocument xml_document;
+  xml_document.Parse(document_string_represent.Data(), document_string_represent.ByteCount());
+  optional<SvgSvg> root = ParseSvgElement(xml_document.RootElement());
+  SvgDocument result;
+  do {
+    if (!root.has_value()) {
+      break;
+    }
+    result.SetRoot(root.value());
+    optional<NodeDelegate<SvgSvg>> root_delegate = result.Root();
+    assert(root_delegate.has_value());
+    assert(root_delegate.value().Type() == SvgType::Svg);
+
+    
+    
+
+  } while (false);
+  return result;
 }
 
 NAMESPACE_END
