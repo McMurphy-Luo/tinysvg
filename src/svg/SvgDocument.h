@@ -22,13 +22,11 @@ public:
   SvgDocument& operator=(const SvgDocument&) = delete;
 
   SvgDocument(SvgDocument&& another)
-    : root_node_(std::move(another.root_node_)) {
+    : root_node_(std::move(another.root_node_)){
 
   }
 
-  SvgDocument& operator=(SvgDocument&& another) {
-    root_node_ = std::move(another.root_node_);
-  }
+  SvgDocument& operator=(SvgDocument&& another);
 
   NodeDelegateBase RootNode() const {
     if (!root_node_) {
