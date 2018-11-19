@@ -84,15 +84,23 @@ namespace {
       return nullopt;
     }
     */
-    
+
+  template<typename T, typename N>
+  NodeDelegate<N> AddChild(NodeDelegate<T>* parent, const N& child) {
+    return parent->AddChild(child);
+  }
+
   template<typename T>
-  optional<NodeDelegateBase> ConstructNode(XMLElement* element, NodeDelegate<T>* parent) {
+  void ConstructNode(XMLElement* element, NodeDelegate<T>* parent) {
     DomString nodeName(element->Name());
-    optional<NodeDelegateBase> me;
     if (nodeName == DomString(u8"svg")) {
-      me = AddNode<SvgSvg>(ParseSvgElement(element), parent);
+      optional<SvgSvg> parse_result = ParseSvgElement(element);
+      if (parse_result) {
+        AddChild<T, SvgSvg>(parent, parse_result.value());
+      }
     }
     else if (nodeName == DomString(u8"line")) {
+      optional<
       me = AddNode<SvgLine>(ParseSvgLineElement(element), parent);
     }
     else if (nodeName == DomString(u8"rect")) {
@@ -113,7 +121,7 @@ namespace {
     return me;
   }
 
-  optional<SvgSvg> ParseSvgElement(XMLElement* element)
+  optional<SvgSvg> AddSvgElement(XMLElement* element)
   {
     DomString nodeName(element->Name());
     assert(nodeName == DomString(u8"svg"));

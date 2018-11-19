@@ -27,7 +27,9 @@ public:
 
   }
 
-  SvgDocument& operator=(SvgDocument&& another);
+  SvgDocument& operator=(SvgDocument&& another) {
+    root_node_ = std::move(another.root_node_);
+  }
 
   optional<NodeDelegate<SvgSvg>> Root() const {
     if (!root_node_) {
