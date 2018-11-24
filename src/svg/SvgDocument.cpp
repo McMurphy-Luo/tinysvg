@@ -28,100 +28,8 @@ using tinyxml2::XMLNode;
 NAMESPACE_BEGIN
 
 namespace {
-  
-  /*
-    SvgDocument<T> Parse() {
-      SvgDocument<T> doc;
-      ConstructRootNode(&doc);
-      do {
-        NodeDelegateBase root_node = doc.RootNode();
-        if (!root_node) {
-          break;
-        }
-        NodeDelegateBase the_real_root = root.To<T>();
 
-
-
-        doc.SetRoot(the_real_root.value().Value());
-
-
-
-        optional<NodeDelegateBase> result_tree = ConstructNode(document_.RootElement(), &root_delegate_);
-        if (result_tree.has_value() && result_tree.value().Type() == SvgType::Svg) {
-          return result_tree.value().To<T>();
-        }
-        return nullopt;
-
-
-
-
-      } while (false);
-      return doc;
-    }
-
-
-    void ConstructRootNode(SvgDocument<T>* doc) {
-      XMLElement* root_element = document_.RootElement();
-      if (!root_element) {
-        return NodeDelegate<SvgNone>();
-      }
-      DomString node_name(root_element->Name());
-      if (node_name != DomString(u8"svg")) {
-        return NodeDelegate<SvgNone>();
-      }
-      optional<T> root_data = ParseSvgElement(root_element);
-      if (!root_data) {
-        return NodeDelegate<SvgNone>();
-      }
-      doc->SetRoot(root_data.value());
-    }
-
-    template<typename T>
-    NodeDelegateBase AddNode(optional<T> target, NodeDelegateBase* parent) {
-      if (target.has_value()) {
-        return parent->AddChild(target.value());
-      }
-      return nullopt;
-    }
-    */
-
-  template<typename T, typename N>
-  NodeDelegate<N> AddChild(NodeDelegate<T>* parent, const N& child) {
-    return parent->AddChild(child);
-  }
-
-  template<typename T>
-  void ConstructNode(XMLElement* element, NodeDelegate<T>* parent) {
-    DomString nodeName(element->Name());
-    if (nodeName == DomString(u8"svg")) {
-      optional<SvgSvg> parse_result = ParseSvgElement(element);
-      if (parse_result) {
-        AddChild<T, SvgSvg>(parent, parse_result.value());
-      }
-    }
-    else if (nodeName == DomString(u8"line")) {
-      optional<
-      me = AddNode<SvgLine>(ParseSvgLineElement(element), parent);
-    }
-    else if (nodeName == DomString(u8"rect")) {
-      me = AddNode<SvgRect>(ParseSvgRectElement(element), parent);
-    }
-    else if (nodeName == DomString(u8"circle")) {
-      me = AddNode<SvgCircle>(ParseSvgCircleElement(element), parent);
-    }
-    else if (nodeName == DomString(u8"ellipse")) {
-      me = AddNode<SvgEllipse>(ParseSvgEllipseElement(element), parent);
-    }
-    else if (nodeName == DomString(u8"polygon")) {
-      me = AddNode<SvgPolygon>(ParseSvgPolygonElement(element), parent);
-    }
-    else if (nodeName == DomString(u8"polyline")) {
-      me = AddNode<SvgPolyline>(ParseSvgPolylineElement(element), parent);
-    }
-    return me;
-  }
-
-  optional<SvgSvg> AddSvgElement(XMLElement* element)
+  optional<SvgSvg> ParseSvgElement(XMLElement* element)
   {
     DomString nodeName(element->Name());
     assert(nodeName == DomString(u8"svg"));
@@ -254,13 +162,60 @@ namespace {
     return the_polyline;
   }
 
+  template<typename T>
+  bool ConstructTree(XMLElement* element, NodeDelegate<T>* parent);
+
+  template<typename T, typename N>
+  bool AddChild(XMLElement* element, NodeDelegate<T>* parent_delegate, const optional<N>& should_be_child_value) {
+    if (!should_be_child_value.has_value()) {
+      return false;
+    }
+    NodeDelegate<N> me_delegate = parent_delegate->AddChild(should_be_child_value.value());
+    XMLElement* child_element = element->FirstChildElement();
+    bool child_construction_succeeded = true;
+    while (child_element && child_construction_succeeded) {
+      child_construction_succeeded = ConstructTree(child_element, &me_delegate);
+      child_element = child_element->NextSiblingElement();
+    }
+    return child_construction_succeeded;
+  }
+
+  template<typename T>
+  bool ConstructTree(XMLElement* element, NodeDelegate<T>* parent) {
+    DomString nodeName(element->Name());
+    bool result = false;
+    if (nodeName == DomString(u8"svg")) {
+      result = AddChild<T, SvgSvg>(element, parent, ParseSvgElement(element));
+    }
+    else if (nodeName == DomString(u8"line")) {
+      result = AddChild<T, SvgLine>(element, parent, ParseSvgLineElement(element));
+    }
+    else if (nodeName == DomString(u8"rect")) {
+      result = AddChild<T, SvgRect>(element, parent, ParseSvgRectElement(element));
+    }
+    else if (nodeName == DomString(u8"circle")) {
+      result = AddChild<T, SvgCircle>(element, parent, ParseSvgCircleElement(element));
+    }
+    else if (nodeName == DomString(u8"ellipse")) {
+      result = AddChild<T, SvgEllipse>(element, parent, ParseSvgEllipseElement(element));
+    }
+    else if (nodeName == DomString(u8"polygon")) {
+      result = AddChild<T, SvgPolygon>(element, parent, ParseSvgPolygonElement(element));
+    }
+    else if (nodeName == DomString(u8"polyline")) {
+      result = AddChild<T, SvgPolyline>(element, parent, ParseSvgPolylineElement(element));
+    }
+    return result;
+  }
+
 } // end unamed namespace
 
 
 SvgDocument Parse(const DomString& document_string_represent) {
   XMLDocument xml_document;
   xml_document.Parse(document_string_represent.Data(), document_string_represent.ByteCount());
-  optional<SvgSvg> root = ParseSvgElement(xml_document.RootElement());
+  XMLElement* root_element = xml_document.RootElement();
+  optional<SvgSvg> root = ParseSvgElement(root_element);
   SvgDocument result;
   do {
     if (!root.has_value()) {
@@ -270,10 +225,11 @@ SvgDocument Parse(const DomString& document_string_represent) {
     optional<NodeDelegate<SvgSvg>> root_delegate = result.Root();
     assert(root_delegate.has_value());
     assert(root_delegate.value().Type() == SvgType::Svg);
-
-    
-    
-
+    XMLElement* direct_child_of_root = root_element->FirstChildElement();
+    while (direct_child_of_root) {
+      ConstructTree(direct_child_of_root, &(root_delegate.value()));
+      direct_child_of_root = direct_child_of_root->NextSiblingElement();
+    }
   } while (false);
   return result;
 }

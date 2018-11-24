@@ -6,6 +6,7 @@
 #include <vector>
 #include <cassert>
 #include <memory>
+#include <algorithm>
 
 #ifdef __cpp_lib_optional
 #include <optional>
@@ -314,7 +315,19 @@ public:
     return NodeDelegate<N>(child_new_created);
   }
 
-  void Detach();
+  void Detach() {
+    if (!the_node_->parent.expired()) {
+      std::shared_ptr<NodeBase> parent = the_node_->parent.lock();
+      parent->children.erase(
+        std::remove(
+          parent->children.begin(),
+          parent->children.end(),
+          the_node_
+        ),
+        parent->children.end()
+      );
+    }
+  }
 
   T& Value() {
     assert(Type() == T::Type);
