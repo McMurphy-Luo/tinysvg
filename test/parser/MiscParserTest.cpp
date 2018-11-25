@@ -1,5 +1,5 @@
 #include "../Config.h"
-#include "parser/MiscParser.h"
+#include "common/MiscParser.h"
 #include "gtest/gtest.h"
 
 using namespace tinysvg;

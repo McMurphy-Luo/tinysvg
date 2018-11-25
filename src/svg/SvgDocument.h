@@ -27,15 +27,16 @@ public:
 
   }
 
+  bool Parse(const DomString& document_string_represent);
+
   SvgDocument& operator=(SvgDocument&& another) {
     root_node_ = std::move(another.root_node_);
   }
 
   optional<NodeDelegate<SvgSvg>> Root() const {
-    if (!root_node_) {
-      return make_optional<NodeDelegate<SvgSvg>>();
-    }
-    return make_optional<NodeDelegate<SvgSvg>>(NodeDelegate<SvgSvg>(root_node_));
+    return make_optional<NodeDelegate<SvgSvg>>(
+      NodeDelegate<SvgSvg>(root_node_)
+    );
   }
 
   void SetRoot(const SvgSvg& value) {
@@ -50,8 +51,6 @@ public:
 private:
   std::shared_ptr<Node<SvgSvg>> root_node_;
 };
-
-SvgDocument Parse(const DomString& document_string_represent);
 
 NAMESPACE_END
 

@@ -17,6 +17,9 @@
     <ClCompile Include="test\parser\SvgDocumentParserTest.cpp" />
     <ClCompile Include="third_party\googletest\googletest\src\gtest-all.cc" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="test\Config.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{FB669E73-1037-47A2-8888-8271EF11978F}</ProjectGuid>

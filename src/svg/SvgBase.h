@@ -281,6 +281,8 @@ protected:
 template<typename T>
 class NodeDelegate: public NodeDelegateBase {
   friend class SvgDocument;
+  template<typename U>
+  friend class NodeDelegate;
 protected:
   NodeDelegate(std::shared_ptr<Node<T>> node)
     :NodeDelegateBase(node)

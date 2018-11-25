@@ -211,27 +211,26 @@ namespace {
 } // end unamed namespace
 
 
-SvgDocument Parse(const DomString& document_string_represent) {
+bool SvgDocument::Parse(const DomString& document_string_represent) {
   XMLDocument xml_document;
   xml_document.Parse(document_string_represent.Data(), document_string_represent.ByteCount());
   XMLElement* root_element = xml_document.RootElement();
   optional<SvgSvg> root = ParseSvgElement(root_element);
-  SvgDocument result;
-  do {
-    if (!root.has_value()) {
-      break;
-    }
-    result.SetRoot(root.value());
-    optional<NodeDelegate<SvgSvg>> root_delegate = result.Root();
-    assert(root_delegate.has_value());
-    assert(root_delegate.value().Type() == SvgType::Svg);
-    XMLElement* direct_child_of_root = root_element->FirstChildElement();
-    while (direct_child_of_root) {
-      ConstructTree(direct_child_of_root, &(root_delegate.value()));
-      direct_child_of_root = direct_child_of_root->NextSiblingElement();
-    }
-  } while (false);
-  return result;
+  bool parse_succeeded = true;
+  if (!root.has_value()) {
+    parse_succeeded = false;
+    return parse_succeeded;
+  }
+  SetRoot(root.value());
+  optional<NodeDelegate<SvgSvg>> root_delegate = Root();
+  assert(root_delegate.has_value());
+  assert(root_delegate.value().Type() == SvgType::Svg);
+  XMLElement* direct_child_of_root = root_element->FirstChildElement();
+  while (direct_child_of_root && parse_succeeded) {
+    parse_succeeded = ConstructTree(direct_child_of_root, &(root_delegate.value()));
+    direct_child_of_root = direct_child_of_root->NextSiblingElement();
+  }
+  return parse_succeeded;
 }
 
 NAMESPACE_END
